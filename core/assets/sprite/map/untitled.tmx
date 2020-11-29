@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.4" tiledversion="2020.10.30" orientation="orthogonal" renderorder="right-down" width="20" height="20" tilewidth="32" tileheight="32" infinite="0" nextlayerid="10" nextobjectid="9">
+<map version="1.4" tiledversion="2020.10.30" orientation="orthogonal" renderorder="right-down" width="20" height="20" tilewidth="32" tileheight="32" infinite="0" nextlayerid="10" nextobjectid="11">
  <tileset firstgid="1" source="grass.tsx"/>
  <tileset firstgid="73" source="Character.tsx"/>
  <layer id="1" name="BackGround" width="20" height="20">
@@ -47,7 +47,7 @@
 19,0,0,9,10,0,0,0,0,0,0,0,21,22,0,0,0,0,0,19,
 19,0,0,21,22,0,0,0,0,0,0,0,0,0,0,0,0,0,0,19,
 19,0,0,20,0,0,0,0,0,0,0,0,0,20,0,0,0,0,0,19,
-19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19
+19,78,78,78,78,19,19,19,19,19,19,19,19,19,19,19,19,19,19,19
 </data>
  </layer>
  <objectgroup id="6" name="Ground"/>
@@ -60,6 +60,8 @@
   <object id="6" x="241" y="243" width="38" height="36"/>
   <object id="7" x="308" y="366" width="40" height="42"/>
   <object id="8" x="429" y="300" width="44" height="42"/>
+  <object id="9" x="364" y="333" width="54" height="51"/>
+  <object id="10" x="717" y="291"/>
  </objectgroup>
  <objectgroup id="8" name="coins"/>
 </map>
