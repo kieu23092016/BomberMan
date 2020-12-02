@@ -32,8 +32,10 @@ public class Bomberman extends ApplicationAdapter {
     SpriteBatch batch;
     Texture img;
     private float delta;
+    public static final int PPM = 100;
     public static final float V_WIDTH = 640;
     public static final float V_HEIGHT = 640;
+
     private Hud hud;
     private TextureAtlas textureAtlas;
     private Sprite sprite;
@@ -45,23 +47,30 @@ public class Bomberman extends ApplicationAdapter {
     private World world;
     private Box2DDebugRenderer b2dr;
     private Bomber bomber;
+
     @Override
     public void create() {
         batch = new SpriteBatch();
         hud = new Hud(batch);
         img = new Texture("sprite\\asset\\player_down.png");
         map = new TmxMapLoader().load("sprite\\map\\untitled.tmx");
-        renderer = new OrthogonalTiledMapRenderer(map);
+
         camera = new OrthographicCamera();
+
+        //create a FitViewport to maintain virtual aspect ratio despite screen size
         viewPort = new FitViewport(V_WIDTH, V_HEIGHT, camera);
-        float w = Gdx.graphics.getWidth();
-        float h = Gdx.graphics.getHeight();
+
+        renderer = new OrthogonalTiledMapRenderer(map,1);
+
         //camera.position.set(320,480,0);//viewPort.getScreenX()/2, viewPort.getScreenY()/2, 0);
+        //camera.position.set( viewPort.getWorldWidth()/2, viewPort.getWorldHeight() / 2);
+        //camera.position.set(viewPort.getWorldWidth() / 2, viewPort.getWorldHeight() / 2,0);
+
         camera.setToOrtho(false, V_WIDTH, V_HEIGHT);
-        camera.update();
+        //camera.update();
 
         //create our Box2D world, setting no gravity in X, -10 gravity in Y, and allow bodies to sleep
-        world = new World(new Vector2(0, -10), true);
+        world = new World(new Vector2(0, 10), true);
         //allows for debug lines of our box2d world.
         b2dr = new Box2DDebugRenderer();
         bomber = new Bomber(world);
@@ -70,14 +79,13 @@ public class Bomberman extends ApplicationAdapter {
         FixtureDef fdef = new FixtureDef();
         PolygonShape shape = new PolygonShape();
         Body body;
-        for(MapObject object: map.getLayers().get(3).getObjects().getByType(RectangleMapObject.class))
-        {
-            Rectangle rect = ((RectangleMapObject)object).getRectangle();
+        for (MapObject object : map.getLayers().get(3).getObjects().getByType(RectangleMapObject.class)) {
+            Rectangle rect = ((RectangleMapObject) object).getRectangle();
             bdef.type = BodyDef.BodyType.StaticBody;
-            bdef.position.set(rect.getX()+rect.getWidth()/2, rect.getY()+rect.getHeight()/2);
+            bdef.position.set((rect.getX() + rect.getWidth() / 2), (rect.getY() + rect.getHeight() / 2));
 
             body = world.createBody(bdef);
-            shape.setAsBox(rect.getWidth()/2, rect.getHeight()/2);
+            shape.setAsBox((rect.getWidth() / 2), (rect.getHeight() / 2));
             fdef.shape = shape;
             body.createFixture(fdef);
         }
@@ -119,16 +127,21 @@ public class Bomberman extends ApplicationAdapter {
         hud.stage.draw();
         update(delta);
     }
-    public void handleInput(float dt){
-        if(Gdx.input.isKeyJustPressed(Input.Keys.UP))
 
-            camera.position.x += 100*dt;
+    public void handleInput(float dt) {
+        if (Gdx.input.isKeyJustPressed(Input.Keys.UP))
+            bomber.b2body.applyLinearImpulse(new Vector2(0.1f, 0), bomber.b2body.getWorldCenter(), true);
+        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT) && bomber.b2body.getLinearVelocity().x <= 3)
+            bomber.b2body.applyLinearImpulse(new Vector2(0.1f, 0), bomber.b2body.getWorldCenter(), true);
+        if (Gdx.input.isKeyPressed(Input.Keys.LEFT) && bomber.b2body.getLinearVelocity().x >= -3)
+            bomber.b2body.applyLinearImpulse(new Vector2(-0.1f, 0), bomber.b2body.getWorldCenter(), true);
     }
-    public void update(float dt){
+
+    public void update(float dt) {
         handleInput(dt);
-        camera.update();
-        renderer.setView(camera);
+        world.step(1 / 60f, 6, 2);
     }
+
     @Override
     public void dispose() {
         batch.dispose();
