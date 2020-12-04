@@ -1,26 +1,26 @@
-package uet.oop.game.Character;
+package uet.oop.game.Entities;
 
 import com.badlogic.gdx.physics.box2d.*;
-import uet.oop.game.Bomberman;
+import uet.oop.game.BombermanGame;
 
 public class Bomber {
     public World world;
-    public Body b2body;
+    public Body bomberBody;
     public Bomber(World world){
         this.world = world;
         defineCharacter();
     }
     public void defineCharacter(){
         BodyDef bodyDef = new BodyDef();
-        bodyDef.position.set(32, 32);
+        bodyDef.position.set(32/ BombermanGame.PPM, 32/ BombermanGame.PPM);
         bodyDef.type = BodyDef.BodyType.DynamicBody;
-        b2body = world.createBody(bodyDef);
+        bomberBody = world.createBody(bodyDef);
 
         FixtureDef fdef = new FixtureDef();
         CircleShape shape = new CircleShape();
-        shape.setRadius(1);
+        shape.setRadius(16/ BombermanGame.PPM);
 
         fdef.shape = shape;
-        b2body.createFixture(fdef);
+        bomberBody.createFixture(fdef);
     }
 }
