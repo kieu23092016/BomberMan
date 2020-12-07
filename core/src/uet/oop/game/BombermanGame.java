@@ -96,7 +96,8 @@ public class BombermanGame extends ApplicationAdapter {
         batch.setProjectionMatrix(camera.combined);
         batch.begin();
         elapsedTime += Gdx.graphics.getDeltaTime();
-        batch.draw(animation.getKeyFrame(elapsedTime, true), 10 / PPM, 20 / PPM, 32 / PPM, 32 / PPM);
+        batch.draw(animation.getKeyFrame(elapsedTime, true), 
+                10 / PPM, 20 / PPM, 32 / PPM, 32 / PPM);
         batch.end();
         update(dt);
 
