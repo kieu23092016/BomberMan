@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
@@ -34,9 +35,10 @@ public class BombermanGame extends ApplicationAdapter {
     private World gameWorld;
     private Box2DDebugRenderer box2DDebugRenderer;
     private Bomber player;
-    private float dt;
+    private float dt = 1/5f;
 
     private TextureAtlas textureAtlas;
+    private TextureAtlas playerAtlas;
     private Animation animation;
     private float elapsedTime = 0;
 
@@ -53,6 +55,7 @@ public class BombermanGame extends ApplicationAdapter {
 
         batch = new SpriteBatch();
         textureAtlas = new TextureAtlas(Gdx.files.internal("sprite/balloon1.txt"));
+        playerAtlas = new TextureAtlas(Gdx.files.internal("sprite/pack"));
         animation = new Animation(1 / 5f, textureAtlas.getRegions());
 
         map = new TmxMapLoader().load("map/untitled.tmx");
@@ -60,7 +63,7 @@ public class BombermanGame extends ApplicationAdapter {
         camera.update();
 
 
-        gameWorld = new World(new Vector2(0, 0), true);
+        gameWorld = new World(new Vector2(0,0), true);
         box2DDebugRenderer = new Box2DDebugRenderer();
 
         BodyDef bodyDef = new BodyDef();
@@ -82,8 +85,7 @@ public class BombermanGame extends ApplicationAdapter {
             fixtureDef.shape = polygonShape;
             body.createFixture(fixtureDef);
         }
-
-        player = new Bomber(gameWorld);
+        player = new Bomber(gameWorld, playerAtlas);
     }
 
     @Override
@@ -95,15 +97,15 @@ public class BombermanGame extends ApplicationAdapter {
 
         batch.setProjectionMatrix(camera.combined);
         batch.begin();
+        player.draw(batch);
         elapsedTime += Gdx.graphics.getDeltaTime();
-        batch.draw(animation.getKeyFrame(elapsedTime, true), 
+        batch.draw((TextureRegion) animation.getKeyFrame(elapsedTime, true),
                 10 / PPM, 20 / PPM, 32 / PPM, 32 / PPM);
         batch.end();
         update(dt);
 
         box2DDebugRenderer.render(gameWorld, camera.combined);
     }
-
 
     @Override
     public void pause() {
@@ -126,16 +128,23 @@ public class BombermanGame extends ApplicationAdapter {
 
     public void handleInput(float dt) {
         if (Gdx.input.isKeyPressed(Input.Keys.RIGHT) && player.bomberBody.getLinearVelocity().x <= 2) {
-            player.bomberBody.applyLinearImpulse(new Vector2(0.1f, 0), player.bomberBody.getWorldCenter(), true);
+            //player.bomberBody.applyLinearImpulse(new Vector2(0.1f, 0), player.bomberBody.getWorldCenter(), true);
+            player.bomberBody.setLinearVelocity(0.4f, 0.0F);
         }
+        else player.bomberBody.setLinearVelocity(0.0f, 0.0F);
         if (Gdx.input.isKeyPressed(Input.Keys.LEFT) && player.bomberBody.getLinearVelocity().x >= -2) {
-            player.bomberBody.applyLinearImpulse(new Vector2(-0.1f, 0), player.bomberBody.getWorldCenter(), true);
+            player.bomberBody.applyLinearImpulse(new Vector2(-0.4f, 0), player.bomberBody.getWorldCenter(), true);
         }
+        if (Gdx.input.isKeyPressed(Input.Keys.UP))
+            player.bomberBody.applyLinearImpulse(new Vector2(0, 0.4f), player.bomberBody.getWorldCenter(), true);
+        if (Gdx.input.isKeyPressed(Input.Keys.DOWN))
+            player.bomberBody.applyLinearImpulse(new Vector2(0, -0.4f), player.bomberBody.getWorldCenter(), true);
+
     }
 
     public void update(float dt) {
         handleInput(dt);
         gameWorld.step(1 / 60f, 6, 2);
-
+        player.update(dt);
     }
 }
