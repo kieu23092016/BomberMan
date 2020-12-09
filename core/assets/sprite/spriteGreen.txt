@@ -1,0 +1,33 @@
+spriteGreen.png
+size: 188, 62
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+tibanh_down
+  rotate: false
+  xy: 1, 1
+  size: 45, 60
+  orig: 45, 60
+  offset: 0, 0
+  index: -1
+tibanh_left
+  rotate: false
+  xy: 48, 1
+  size: 45, 60
+  orig: 45, 60
+  offset: 0, 0
+  index: -1
+tibanh_right
+  rotate: false
+  xy: 95, 1
+  size: 45, 60
+  orig: 45, 60
+  offset: 0, 0
+  index: -1
+tibanh_up
+  rotate: false
+  xy: 142, 1
+  size: 45, 60
+  orig: 45, 60
+  offset: 0, 0
+  index: -1

@@ -1,0 +1,33 @@
+spriteBlue.png
+size: 114, 114
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+tiachop_down
+  rotate: false
+  xy: 1, 1
+  size: 45, 65
+  orig: 45, 65
+  offset: 0, 0
+  index: -1
+tiachop_left
+  rotate: true
+  xy: 1, 68
+  size: 45, 65
+  orig: 45, 65
+  offset: 0, 0
+  index: -1
+tiachop_right
+  rotate: true
+  xy: 48, 1
+  size: 45, 65
+  orig: 45, 65
+  offset: 0, 0
+  index: -1
+tiachop_up
+  rotate: false
+  xy: 68, 48
+  size: 45, 65
+  orig: 45, 65
+  offset: 0, 0
+  index: -1

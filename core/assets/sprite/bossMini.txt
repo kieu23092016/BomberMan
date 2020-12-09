@@ -1,0 +1,33 @@
+bossMini.png
+size: 188, 60
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+quaivat 3_down
+  rotate: false
+  xy: 1, 1
+  size: 45, 58
+  orig: 45, 58
+  offset: 0, 0
+  index: -1
+quaivat 3_left
+  rotate: false
+  xy: 48, 1
+  size: 45, 58
+  orig: 45, 58
+  offset: 0, 0
+  index: -1
+quaivat 3_right
+  rotate: false
+  xy: 95, 1
+  size: 45, 58
+  orig: 45, 58
+  offset: 0, 0
+  index: -1
+quaivat 3_up
+  rotate: false
+  xy: 142, 1
+  size: 45, 58
+  orig: 45, 58
+  offset: 0, 0
+  index: -1

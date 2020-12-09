@@ -1,0 +1,33 @@
+spriteRed.png
+size: 113, 114
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+khokho_down
+  rotate: false
+  xy: 1, 1
+  size: 45, 65
+  orig: 45, 65
+  offset: 0, 0
+  index: -1
+khokho_left
+  rotate: false
+  xy: 68, 48
+  size: 44, 65
+  orig: 45, 65
+  offset: 0, 0
+  index: -1
+khokho_right
+  rotate: true
+  xy: 1, 68
+  size: 45, 65
+  orig: 45, 65
+  offset: 0, 0
+  index: -1
+khokho_up
+  rotate: true
+  xy: 48, 1
+  size: 45, 64
+  orig: 45, 65
+  offset: 0, 1
+  index: -1

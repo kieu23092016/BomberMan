@@ -1,0 +1,33 @@
+boss1.png
+size: 164, 45
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+quaivat 1_down
+  rotate: false
+  xy: 1, 1
+  size: 39, 43
+  orig: 39, 43
+  offset: 0, 0
+  index: -1
+quaivat 1_left
+  rotate: false
+  xy: 42, 1
+  size: 39, 43
+  orig: 39, 43
+  offset: 0, 0
+  index: -1
+quaivat 1_right
+  rotate: false
+  xy: 83, 1
+  size: 39, 43
+  orig: 39, 43
+  offset: 0, 0
+  index: -1
+quaivat 1_up
+  rotate: false
+  xy: 124, 1
+  size: 39, 43
+  orig: 39, 43
+  offset: 0, 0
+  index: -1
