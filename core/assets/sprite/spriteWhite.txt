@@ -1,0 +1,33 @@
+spriteWhite.png
+size: 180, 56
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+bebong_down
+  rotate: false
+  xy: 0, 0
+  size: 45, 56
+  orig: 45, 56
+  offset: 0, 0
+  index: -1
+bebong_left
+  rotate: false
+  xy: 45, 0
+  size: 45, 56
+  orig: 45, 56
+  offset: 0, 0
+  index: -1
+bebong_right
+  rotate: false
+  xy: 90, 0
+  size: 45, 56
+  orig: 45, 56
+  offset: 0, 0
+  index: -1
+bebong_up
+  rotate: false
+  xy: 135, 0
+  size: 45, 56
+  orig: 45, 56
+  offset: 0, 0
+  index: -1

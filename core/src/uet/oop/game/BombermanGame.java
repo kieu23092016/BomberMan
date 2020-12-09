@@ -42,8 +42,8 @@ public class BombermanGame extends ApplicationAdapter {
     private Animation animation;
     private float elapsedTime = 0;
 
-    public static final float V_WIDTH = 640;
-    public static final float V_HEIGHT = 640;
+    public static final float V_WIDTH = 675;
+    public static final float V_HEIGHT = 675;
 
     @Override
     public void create() {
@@ -54,11 +54,11 @@ public class BombermanGame extends ApplicationAdapter {
 
 
         batch = new SpriteBatch();
-        textureAtlas = new TextureAtlas(Gdx.files.internal("sprite/balloon1.txt"));
+        textureAtlas = new TextureAtlas(Gdx.files.internal("sprite/spriteWhite.txt"));
         playerAtlas = new TextureAtlas(Gdx.files.internal("sprite/pack"));
         animation = new Animation(1 / 5f, textureAtlas.getRegions());
 
-        map = new TmxMapLoader().load("map/untitled.tmx");
+        map = new TmxMapLoader().load("map/map1.tmx");
         renderer = new OrthogonalTiledMapRenderer(map, 1 / PPM);
         camera.update();
 
@@ -85,6 +85,35 @@ public class BombermanGame extends ApplicationAdapter {
             fixtureDef.shape = polygonShape;
             body.createFixture(fixtureDef);
         }
+        for (MapObject mapObject : map.getLayers().get(4).getObjects().getByType(RectangleMapObject.class)) {
+            Rectangle rectangle = ((RectangleMapObject) mapObject).getRectangle();
+
+            bodyDef.type = BodyDef.BodyType.StaticBody;
+            bodyDef.position.set((rectangle.getX() + rectangle.getWidth() / 2) / PPM,
+                    (rectangle.getY() + rectangle.getHeight() / 2) / PPM);
+            body = gameWorld.createBody(bodyDef);
+
+            //TODO:
+            polygonShape.setAsBox(rectangle.getWidth() / 2 / PPM, rectangle.getHeight() / 2 / PPM);
+
+            fixtureDef.shape = polygonShape;
+            body.createFixture(fixtureDef);
+        }
+        for (MapObject mapObject : map.getLayers().get(2).getObjects().getByType(RectangleMapObject.class)) {
+            Rectangle rectangle = ((RectangleMapObject) mapObject).getRectangle();
+
+            bodyDef.type = BodyDef.BodyType.StaticBody;
+            bodyDef.position.set((rectangle.getX() + rectangle.getWidth() / 2) / PPM,
+                    (rectangle.getY() + rectangle.getHeight() / 2) / PPM);
+            body = gameWorld.createBody(bodyDef);
+
+            //TODO:
+            polygonShape.setAsBox(rectangle.getWidth() / 2 / PPM, rectangle.getHeight() / 2 / PPM);
+
+            fixtureDef.shape = polygonShape;
+            body.createFixture(fixtureDef);
+        }
+
         player = new Bomber(gameWorld, playerAtlas);
     }
 
@@ -100,7 +129,7 @@ public class BombermanGame extends ApplicationAdapter {
         player.draw(batch);
         elapsedTime += Gdx.graphics.getDeltaTime();
         batch.draw((TextureRegion) animation.getKeyFrame(elapsedTime, true),
-                10 / PPM, 20 / PPM, 32 / PPM, 32 / PPM);
+                10 / PPM, 20 / PPM, 45 / PPM, 45 / PPM);
         batch.end();
         update(dt);
 

@@ -1,0 +1,33 @@
+bigBoss.png
+size: 137, 696
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+boss_down
+  rotate: false
+  xy: 1, 1
+  size: 135, 173
+  orig: 135, 173
+  offset: 0, 0
+  index: -1
+boss_left
+  rotate: false
+  xy: 1, 351
+  size: 133, 173
+  orig: 135, 173
+  offset: 0, 0
+  index: -1
+boss_right
+  rotate: false
+  xy: 1, 176
+  size: 135, 173
+  orig: 135, 173
+  offset: 0, 0
+  index: -1
+boss_up
+  rotate: false
+  xy: 1, 526
+  size: 135, 169
+  orig: 135, 173
+  offset: 0, 0
+  index: -1
