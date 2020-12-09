@@ -55,7 +55,7 @@ public class BombermanGame extends ApplicationAdapter {
 
         batch = new SpriteBatch();
         textureAtlas = new TextureAtlas(Gdx.files.internal("sprite/spriteWhite.txt"));
-        playerAtlas = new TextureAtlas(Gdx.files.internal("sprite/pack"));
+        playerAtlas = new TextureAtlas(Gdx.files.internal("sprite/spriteWhite.txt"));
         animation = new Animation(1 / 5f, textureAtlas.getRegions());
 
         map = new TmxMapLoader().load("map/map1.tmx");
@@ -128,8 +128,8 @@ public class BombermanGame extends ApplicationAdapter {
         batch.begin();
         player.draw(batch);
         elapsedTime += Gdx.graphics.getDeltaTime();
-        batch.draw((TextureRegion) animation.getKeyFrame(elapsedTime, true),
-                10 / PPM, 20 / PPM, 45 / PPM, 45 / PPM);
+        //batch.draw((TextureRegion) animation.getKeyFrame(elapsedTime, true),
+          //      10 / PPM, 20 / PPM, 45 / PPM, 45 / PPM);
         batch.end();
         update(dt);
 

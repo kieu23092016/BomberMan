@@ -17,22 +17,22 @@ public class Bomber extends Sprite {
     public World world;
     public Body bomberBody;
     private TextureRegion player_left;
-    private Animation bomberLeft;
-    private Animation bomberUp;
-    private Animation bomberRight;
-    private Animation bomberDown;
+    private TextureRegion bomberLeft;
+    private TextureRegion bomberUp;
+    private TextureRegion bomberRight;
+    private TextureRegion bomberDown;
     private float stateTimer;
     private  boolean runningRight;
 
     public Bomber(World world, TextureAtlas textureAtlas){
-        super(textureAtlas.findRegion("player_left2"));
+        super(textureAtlas.findRegion("bebong_down"));
         this.world = world;
         currentState = State.Left;
         previousState = State.Left;
         stateTimer = 0;
         runningRight = true;
 
-        Array<TextureRegion> frames = new Array<TextureRegion>();
+        /*Array<TextureRegion> frames = new Array<TextureRegion>();
         for(int i = 1; i<4; i++)
             frames.add(new TextureRegion(textureAtlas.findRegion("player_left"+i)));
             bomberLeft = new Animation(0.1f, frames);
@@ -48,47 +48,48 @@ public class Bomber extends Sprite {
         for(int i = 1; i<4; i++)
             frames.add(new TextureRegion(textureAtlas.findRegion("player_right"+i)));
         bomberRight= new Animation(0.1f, frames);
-        frames.clear();
+        frames.clear();*/
 
         defineCharacter();
-        player_left = new TextureRegion(getTexture(), 74,2,16,16);
-        setBounds(16,0,32/BombermanGame.PPM,32/BombermanGame.PPM);
-        setRegion(player_left);
+        bomberLeft = new TextureRegion(getTexture(), 45,0,45,56);
+        bomberRight = new TextureRegion(getTexture(), 90,0,45,56);
+        bomberDown= new TextureRegion(getTexture(), 0,0,45,56);
+        bomberUp = new TextureRegion(getTexture(), 135,2,45,56);
+
+        setBounds(45,0,45/BombermanGame.PPM,56/BombermanGame.PPM);
+        setRegion(bomberLeft);
     }
     public void update(float dt){
         setPosition(bomberBody.getPosition().x-getWidth()/2, bomberBody.getPosition().y-getHeight()/2);
         setRegion(getFrame(dt));
     }
     public TextureRegion getFrame(float dt){
-        currentState = getState();
         TextureRegion region;
-        switch (currentState){
+        /*switch (currentState){
             case Up:
-                region = (TextureRegion) bomberUp.getKeyFrame(stateTimer);
+                region = bomberUp;
                 break;
             case Down:
-                region = (TextureRegion) bomberDown.getKeyFrame(stateTimer);
+                region = bomberDown;
             case Left:
-                region = (TextureRegion) bomberLeft.getKeyFrame(stateTimer);
+                region = bomberLeft;
             case Right:
-                region = (TextureRegion) bomberRight.getKeyFrame(stateTimer);
+                region = bomberRight;
             default:
-                region = player_left;
+                region = bomberRight;
                 break;
         }
         //if((bomberBody.getLinearVelocity().x<0 || !runningRight)&& region.isFlipX())
-        stateTimer = currentState==previousState? stateTimer+dt:0;
-        previousState = currentState;
-        return region;
-    }
-    public State getState(){
-        if(bomberBody.getLinearVelocity().y>0 || (bomberBody.getLinearVelocity().y<0 && previousState == State.Up))
-            return State.Up;
+        //stateTimer = currentState==previousState? stateTimer+dt:0;
+        //previousState = currentState;*/
+        if(bomberBody.getLinearVelocity().y>0)
+            region = bomberUp;
         else if(bomberBody.getLinearVelocity().y<0)
-            return State.Down;
+            region = bomberDown;
         else if(bomberBody.getLinearVelocity().x <0)
-            return State.Left;
-        else return State.Right;
+            region = bomberLeft;
+        else region = bomberRight;
+        return region;
     }
     public void defineCharacter(){
         BodyDef bodyDef = new BodyDef();
