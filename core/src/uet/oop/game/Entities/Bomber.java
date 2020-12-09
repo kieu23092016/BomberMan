@@ -1,21 +1,20 @@
 package uet.oop.game.Entities;
 
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.physics.box2d.*;
-import com.badlogic.gdx.utils.Array;
-import uet.oop.game.BombermanGame;
+import uet.oop.game.Screens.PlayScreen;
+
+import static uet.oop.game.Manager.GameManager.PPM;
 
 
-public class Bomber extends Sprite {
-    public enum State{Dead, Up, Down, Left, Right};
+public class Bomber extends Entity {
+    public enum State{DEAD, UP, DOWN, LEFT, RIGHT};
     public State currentState;
-    public State previousState;
-    public World world;
-    public Body bomberBody;
+    public State previousState;/*
+    public World gameWorld;
+    public Body body;*/
     private TextureRegion player_left;
     private TextureRegion bomberLeft;
     private TextureRegion bomberUp;
@@ -24,11 +23,11 @@ public class Bomber extends Sprite {
     private float stateTimer;
     private  boolean runningRight;
 
-    public Bomber(World world, TextureAtlas textureAtlas){
+    public Bomber(PlayScreen playScreen, TextureAtlas textureAtlas){
         super(textureAtlas.findRegion("bebong_down"));
-        this.world = world;
-        currentState = State.Left;
-        previousState = State.Left;
+        this.gameWorld = playScreen.getGameWorld();
+        currentState = State.LEFT;
+        previousState = State.LEFT;
         stateTimer = 0;
         runningRight = true;
 
@@ -56,11 +55,11 @@ public class Bomber extends Sprite {
         bomberDown= new TextureRegion(getTexture(), 0,0,45,56);
         bomberUp = new TextureRegion(getTexture(), 135,2,45,56);
 
-        setBounds(45,0,45/BombermanGame.PPM,56/BombermanGame.PPM);
+        setBounds(45,0,45/PPM,56/PPM);
         setRegion(bomberLeft);
     }
     public void update(float dt){
-        setPosition(bomberBody.getPosition().x-getWidth()/2, bomberBody.getPosition().y-getHeight()/2);
+        setPosition(body.getPosition().x-getWidth()/2, body.getPosition().y-getHeight()/2);
         setRegion(getFrame(dt));
     }
     public TextureRegion getFrame(float dt){
@@ -82,26 +81,26 @@ public class Bomber extends Sprite {
         //if((bomberBody.getLinearVelocity().x<0 || !runningRight)&& region.isFlipX())
         //stateTimer = currentState==previousState? stateTimer+dt:0;
         //previousState = currentState;*/
-        if(bomberBody.getLinearVelocity().y>0)
+        if(body.getLinearVelocity().y>0)
             region = bomberUp;
-        else if(bomberBody.getLinearVelocity().y<0)
+        else if(body.getLinearVelocity().y<0)
             region = bomberDown;
-        else if(bomberBody.getLinearVelocity().x <0)
+        else if(body.getLinearVelocity().x <0)
             region = bomberLeft;
         else region = bomberRight;
         return region;
     }
     public void defineCharacter(){
         BodyDef bodyDef = new BodyDef();
-        bodyDef.position.set(32/ BombermanGame.PPM, 32/ BombermanGame.PPM);
+        bodyDef.position.set(32/ PPM, 32/ PPM);
         bodyDef.type = BodyDef.BodyType.DynamicBody;
-        bomberBody = world.createBody(bodyDef);
+        body = gameWorld.createBody(bodyDef);
 
         FixtureDef fdef = new FixtureDef();
         CircleShape shape = new CircleShape();
-        shape.setRadius(16/ BombermanGame.PPM);
+        shape.setRadius(16/ PPM);
 
         fdef.shape = shape;
-        bomberBody.createFixture(fdef);
+        body.createFixture(fdef);
     }
 }

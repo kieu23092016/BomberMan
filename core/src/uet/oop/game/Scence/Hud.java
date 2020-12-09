@@ -9,6 +9,9 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import uet.oop.game.BombermanGame;
 
+import static uet.oop.game.Manager.GameManager.V_HEIGHT;
+import static uet.oop.game.Manager.GameManager.V_WIDTH;
+
 public class Hud {
     public Stage stage;
     private Viewport viewport;
@@ -26,7 +29,7 @@ public class Hud {
         worldTimer = 300;
         timeCount = 0;
         score = 0;
-        viewport = new FitViewport(BombermanGame.V_WIDTH, BombermanGame.V_HEIGHT);
+        viewport = new FitViewport(V_WIDTH, V_HEIGHT);
         stage = new Stage(viewport, spriteBatch);
 
         countdownLabel = new Label(String.format("%03d", worldTimer), new Label.LabelStyle(new BitmapFont(), com.badlogic.gdx.graphics.Color.BLUE ));
