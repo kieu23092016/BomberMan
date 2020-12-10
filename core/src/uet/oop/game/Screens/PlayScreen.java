@@ -19,6 +19,10 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import uet.oop.game.BombermanGame;
 import uet.oop.game.Entities.Bomber;
+import uet.oop.game.Entities.Brick;
+import uet.oop.game.Entities.Stone;
+
+import java.util.concurrent.BrokenBarrierException;
 
 import static uet.oop.game.Manager.GameManager.*;
 import static uet.oop.game.Manager.GameManager.PPM;
@@ -64,51 +68,19 @@ public class PlayScreen implements Screen {
         gameWorld = new World(new Vector2(0,0), true);
         box2DDebugRenderer = new Box2DDebugRenderer();
 
-        BodyDef bodyDef = new BodyDef();
-        PolygonShape polygonShape = new PolygonShape();
-        FixtureDef fixtureDef = new FixtureDef();
-        Body body;
         // TODO: create ground bodies.
-        for (MapObject mapObject : map.getLayers().get(3).getObjects().getByType(RectangleMapObject.class)) {
-            Rectangle rectangle = ((RectangleMapObject) mapObject).getRectangle();
-
-            bodyDef.type = BodyDef.BodyType.StaticBody;
-            bodyDef.position.set((rectangle.getX() + rectangle.getWidth() / 2) / PPM,
-                    (rectangle.getY() + rectangle.getHeight() / 2) / PPM);
-            body = gameWorld.createBody(bodyDef);
-
-            polygonShape.setAsBox(rectangle.getWidth() / 2 / PPM, rectangle.getHeight() / 2 / PPM);
-
-            fixtureDef.shape = polygonShape;
-            body.createFixture(fixtureDef);
+        for(MapObject object : map.getLayers().get(2).getObjects().getByType(RectangleMapObject.class)){
+            Rectangle rectangle = ((RectangleMapObject)object).getRectangle();
+            new Brick(gameWorld, map, rectangle);
         }
-        for (MapObject mapObject : map.getLayers().get(4).getObjects().getByType(RectangleMapObject.class)) {
-            Rectangle rectangle = ((RectangleMapObject) mapObject).getRectangle();
-
-            bodyDef.type = BodyDef.BodyType.StaticBody;
-            bodyDef.position.set((rectangle.getX() + rectangle.getWidth() / 2) / PPM,
-                    (rectangle.getY() + rectangle.getHeight() / 2) / PPM);
-            body = gameWorld.createBody(bodyDef);
-
-            polygonShape.setAsBox(rectangle.getWidth() / 2 / PPM, rectangle.getHeight() / 2 / PPM);
-
-            fixtureDef.shape = polygonShape;
-            body.createFixture(fixtureDef);
+        for(MapObject object : map.getLayers().get(3).getObjects().getByType(RectangleMapObject.class)){
+            Rectangle rectangle = ((RectangleMapObject)object).getRectangle();
+            new Stone(gameWorld, map, rectangle);
         }
-        for (MapObject mapObject : map.getLayers().get(2).getObjects().getByType(RectangleMapObject.class)) {
-            Rectangle rectangle = ((RectangleMapObject) mapObject).getRectangle();
-
-            bodyDef.type = BodyDef.BodyType.StaticBody;
-            bodyDef.position.set((rectangle.getX() + rectangle.getWidth() / 2) / PPM,
-                    (rectangle.getY() + rectangle.getHeight() / 2) / PPM);
-            body = gameWorld.createBody(bodyDef);
-
-            polygonShape.setAsBox(rectangle.getWidth() / 2 / PPM, rectangle.getHeight() / 2 / PPM);
-
-            fixtureDef.shape = polygonShape;
-            body.createFixture(fixtureDef);
+        for(MapObject object : map.getLayers().get(4).getObjects().getByType(RectangleMapObject.class)){
+            Rectangle rectangle = ((RectangleMapObject)object).getRectangle();
+            new Brick(gameWorld, map, rectangle);
         }
-
         player = new Bomber(this, playerAtlas);
     }
 
@@ -148,7 +120,6 @@ public class PlayScreen implements Screen {
             player.body.applyLinearImpulse(new Vector2(0, 0.4f), player.body.getWorldCenter(), true);
         if (Gdx.input.isKeyPressed(Input.Keys.DOWN))
             player.body.applyLinearImpulse(new Vector2(0, -0.4f), player.body.getWorldCenter(), true);
-
     }
 
     public void update(float dt) {

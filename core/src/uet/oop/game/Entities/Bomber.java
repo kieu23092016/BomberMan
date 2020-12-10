@@ -12,9 +12,7 @@ import static uet.oop.game.Manager.GameManager.PPM;
 public class Bomber extends Entity {
     public enum State{DEAD, UP, DOWN, LEFT, RIGHT};
     public State currentState;
-    public State previousState;/*
-    public World gameWorld;
-    public Body body;*/
+    public State previousState;
     private TextureRegion player_left;
     private TextureRegion bomberLeft;
     private TextureRegion bomberUp;
