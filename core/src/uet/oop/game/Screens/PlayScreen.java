@@ -3,6 +3,8 @@ package uet.oop.game.Screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Animation;
@@ -37,9 +39,10 @@ public class PlayScreen implements Screen {
     private Box2DDebugRenderer box2DDebugRenderer;
     private Bomber player;
     private Boss1 boss1;
-    private float dt = 1/5f;
+    private float dt = 1 / 5f;
 
     private Animation animation;
+    private Music music;
     public float elapsedTime = 0;
 
     public World getGameWorld() {
@@ -60,7 +63,7 @@ public class PlayScreen implements Screen {
         renderer = new OrthogonalTiledMapRenderer(map, 1 / PPM);
         camera.update();
 
-        gameWorld = new World(new Vector2(0,0), true);
+        gameWorld = new World(new Vector2(0, 0), true);
         box2DDebugRenderer = new Box2DDebugRenderer(
                 /*drawBodies*/         true,
                 /*drawJoints*/         true,
@@ -70,22 +73,25 @@ public class PlayScreen implements Screen {
                 /*drawContacts*/       true);
 
         // TODO: create ground bodies.
-        for(MapObject object : map.getLayers().get(2).getObjects().getByType(RectangleMapObject.class)){
-            Rectangle rectangle = ((RectangleMapObject)object).getRectangle();
+        for (MapObject object : map.getLayers().get(2).getObjects().getByType(RectangleMapObject.class)) {
+            Rectangle rectangle = ((RectangleMapObject) object).getRectangle();
             new Brick(gameWorld, map, rectangle);
         }
-        for(MapObject object : map.getLayers().get(4).getObjects().getByType(RectangleMapObject.class)){
-            Rectangle rectangle = ((RectangleMapObject)object).getRectangle();
+        for (MapObject object : map.getLayers().get(4).getObjects().getByType(RectangleMapObject.class)) {
+            Rectangle rectangle = ((RectangleMapObject) object).getRectangle();
             new Stone(gameWorld, map, rectangle);
         }
-        for(MapObject object : map.getLayers().get(3).getObjects().getByType(RectangleMapObject.class)){
-            Rectangle rectangle = ((RectangleMapObject)object).getRectangle();
+        for (MapObject object : map.getLayers().get(3).getObjects().getByType(RectangleMapObject.class)) {
+            Rectangle rectangle = ((RectangleMapObject) object).getRectangle();
             new Brick(gameWorld, map, rectangle);
         }
         player = new Bomber(this, playerAtlas);
         boss1 = new Boss1(gameWorld, map, boss1Atlas);
         animation = boss1.animation;
         gameWorld.setContactListener(new WorldContactListener());
+        music = BombermanGame.manager.get("audio/music/menu1.ogg", Music.class);
+        music.setLooping(true);
+        music.play();
 
     }
 
@@ -121,8 +127,7 @@ public class PlayScreen implements Screen {
         if (Gdx.input.isKeyPressed(Input.Keys.RIGHT) && player.body.getLinearVelocity().x <= 2) {
             //player.bomberBody.applyLinearImpulse(new Vector2(0.1f, 0), player.bomberBody.getWorldCenter(), true);
             player.body.setLinearVelocity(0.4f, 0.0F);
-        }
-        else player.body.setLinearVelocity(0.0f, 0.0F);
+        } else player.body.setLinearVelocity(0.0f, 0.0F);
         if (Gdx.input.isKeyPressed(Input.Keys.LEFT) && player.body.getLinearVelocity().x >= -2) {
             player.body.applyLinearImpulse(new Vector2(-0.4f, 0), player.body.getWorldCenter(), true);
         }
