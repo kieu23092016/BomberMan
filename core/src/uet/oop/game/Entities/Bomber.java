@@ -1,20 +1,21 @@
 package uet.oop.game.Entities;
 
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import uet.oop.game.Screens.PlayScreen;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static uet.oop.game.Manager.GameManager.*;
 
 
 public class Bomber extends Entity {
-    @Override
-    public void onHeadHit() {
 
-    }
+
+    public List<Bomb> bombList = new ArrayList<Bomb>();
+
     public enum State{DEAD, UP, DOWN, LEFT, RIGHT};
     public State currentState;
     public State previousState;
@@ -123,5 +124,23 @@ public class Bomber extends Entity {
         fdef.shape = edgeDown;
         fdef.isSensor = true;
         body.createFixture(fdef).setUserData("head");
+    }
+
+    public void placeBomb(Batch batch) {
+        Bomb bomb = new Bomb(this, bombAtlas);
+        bombList.add(bomb);
+    }
+
+    public void draw(Batch batch, float dt) {
+        for (int i = 0 ; i< bombList.size(); i++) {
+            bombList.get(i).draw(batch, dt);
+        }
+        this.draw(batch);
+
+    }
+
+    @Override
+    public void onHeadHit() {
+
     }
 }

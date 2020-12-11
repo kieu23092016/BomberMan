@@ -6,8 +6,6 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Animation;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
@@ -22,15 +20,11 @@ import uet.oop.game.BombermanGame;
 import uet.oop.game.Entities.*;
 import uet.oop.game.Manager.WorldContactListener;
 
-import java.util.concurrent.BrokenBarrierException;
-
 import static uet.oop.game.Manager.GameManager.*;
 import static uet.oop.game.Manager.GameManager.PPM;
 
 public class PlayScreen implements Screen {
 
-    //TODO: test bomb
-    public Bomb bomb;
 
     private BombermanGame game;
 
@@ -45,11 +39,8 @@ public class PlayScreen implements Screen {
     private Boss1 boss1;
     private float dt = 1/5f;
 
-    private TextureAtlas textureAtlas;
-    private TextureAtlas playerAtlas;
-    private TextureAtlas boss1Atlas;
     private Animation animation;
-    private float elapsedTime = 0;
+    public float elapsedTime = 0;
 
     public World getGameWorld() {
         return gameWorld;
@@ -62,11 +53,8 @@ public class PlayScreen implements Screen {
         camera = new OrthographicCamera(V_WIDTH / PPM, V_HEIGHT / PPM);
         viewport = new FitViewport(V_WIDTH / PPM, V_HEIGHT / PPM, camera);
         camera.position.set(viewport.getWorldWidth() / 2, viewport.getWorldHeight() / 2, 0);
-        textureAtlas = new TextureAtlas(Gdx.files.internal("sprite/balloon1.txt"));
 
-        boss1Atlas = new TextureAtlas(Gdx.files.internal(BOSS1_ATLAS));
-        playerAtlas = new TextureAtlas(Gdx.files.internal(BOMBER_ATLAS));
-        animation = new Animation(1 / 5f, textureAtlas.getRegions());
+        animation = new Animation(1 / 5f, bombAtlas.getRegions());
 
         map = new TmxMapLoader().load(MAP_FILES);
         renderer = new OrthogonalTiledMapRenderer(map, 1 / PPM);
@@ -99,7 +87,6 @@ public class PlayScreen implements Screen {
         animation = boss1.animation;
         gameWorld.setContactListener(new WorldContactListener());
 
-        bomb = new Bomb(player, textureAtlas);
     }
 
     @Override
@@ -117,8 +104,9 @@ public class PlayScreen implements Screen {
         game.batch.setProjectionMatrix(camera.combined);
         game.batch.begin();
 
-        bomb.draw(game.batch);
-        player.draw(game.batch);
+        player.draw(game.batch, dt);
+        handleInput(dt);
+
         boss1.draw(game.batch);
 
         elapsedTime += Gdx.graphics.getDeltaTime();
@@ -143,17 +131,13 @@ public class PlayScreen implements Screen {
         if (Gdx.input.isKeyPressed(Input.Keys.DOWN))
             player.body.applyLinearImpulse(new Vector2(0, -0.4f), player.body.getWorldCenter(), true);
         if (Gdx.input.isKeyPressed(Input.Keys.SPACE))
-            new Bomb(player, textureAtlas);
-
+            player.placeBomb(game.batch);
     }
 
     public void update(float dt) {
-        handleInput(dt);
         gameWorld.step(1 / 60f, 6, 2);
         player.update(dt);
         boss1.update(dt);
-        //TODO: test bomb
-        bomb.update(dt);
     }
 
     @Override
