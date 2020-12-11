@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
@@ -19,8 +20,10 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import uet.oop.game.BombermanGame;
 import uet.oop.game.Entities.Bomber;
+import uet.oop.game.Entities.Boss1;
 import uet.oop.game.Entities.Brick;
 import uet.oop.game.Entities.Stone;
+import uet.oop.game.Manager.WorldContactListener;
 
 import java.util.concurrent.BrokenBarrierException;
 
@@ -39,10 +42,12 @@ public class PlayScreen implements Screen {
     private World gameWorld;
     private Box2DDebugRenderer box2DDebugRenderer;
     private Bomber player;
+    private Boss1 boss1;
     private float dt = 1/5f;
 
     private TextureAtlas textureAtlas;
     private TextureAtlas playerAtlas;
+    private TextureAtlas boss1Atlas;
     private Animation animation;
     private float elapsedTime = 0;
 
@@ -58,6 +63,8 @@ public class PlayScreen implements Screen {
         viewport = new FitViewport(V_WIDTH / PPM, V_HEIGHT / PPM, camera);
         camera.position.set(viewport.getWorldWidth() / 2, viewport.getWorldHeight() / 2, 0);
         textureAtlas = new TextureAtlas(Gdx.files.internal("sprite/spriteWhite.txt"));
+
+        boss1Atlas = new TextureAtlas(Gdx.files.internal(BOSS1_ATLAS));
         playerAtlas = new TextureAtlas(Gdx.files.internal(BOMBER_ATLAS));
         animation = new Animation(1 / 5f, textureAtlas.getRegions());
 
@@ -66,22 +73,31 @@ public class PlayScreen implements Screen {
         camera.update();
 
         gameWorld = new World(new Vector2(0,0), true);
-        box2DDebugRenderer = new Box2DDebugRenderer();
+        box2DDebugRenderer = new Box2DDebugRenderer(
+                /*drawBodies*/         true,
+                /*drawJoints*/         true,
+                /*drawAABBs*/          false,
+                /*drawInactiveBodies*/ true,
+                /*drawVelocities*/     false,
+                /*drawContacts*/       true);
 
         // TODO: create ground bodies.
         for(MapObject object : map.getLayers().get(2).getObjects().getByType(RectangleMapObject.class)){
             Rectangle rectangle = ((RectangleMapObject)object).getRectangle();
             new Brick(gameWorld, map, rectangle);
         }
-        for(MapObject object : map.getLayers().get(3).getObjects().getByType(RectangleMapObject.class)){
+        for(MapObject object : map.getLayers().get(4).getObjects().getByType(RectangleMapObject.class)){
             Rectangle rectangle = ((RectangleMapObject)object).getRectangle();
             new Stone(gameWorld, map, rectangle);
         }
-        for(MapObject object : map.getLayers().get(4).getObjects().getByType(RectangleMapObject.class)){
+        for(MapObject object : map.getLayers().get(3).getObjects().getByType(RectangleMapObject.class)){
             Rectangle rectangle = ((RectangleMapObject)object).getRectangle();
             new Brick(gameWorld, map, rectangle);
         }
         player = new Bomber(this, playerAtlas);
+        boss1 = new Boss1(gameWorld, map, boss1Atlas);
+        animation = boss1.animation;
+        gameWorld.setContactListener(new WorldContactListener());
     }
 
     @Override
@@ -99,11 +115,12 @@ public class PlayScreen implements Screen {
         game.batch.setProjectionMatrix(camera.combined);
         game.batch.begin();
         player.draw(game.batch);
+        boss1.draw(game.batch);
         elapsedTime += Gdx.graphics.getDeltaTime();
-        //batch.draw((TextureRegion) animation.getKeyFrame(elapsedTime, true), 10 / PPM, 20 / PPM, 45 / PPM, 45 / PPM);
+        game.batch.draw((TextureRegion) animation.getKeyFrame(elapsedTime, true), 10 / PPM, 20 / PPM, 45 / PPM, 45 / PPM);
         game.batch.end();
         update(dt);
-
+        //box2DDebugRenderer.setDrawBodies(false);
         box2DDebugRenderer.render(gameWorld, camera.combined);
     }
 
@@ -126,6 +143,7 @@ public class PlayScreen implements Screen {
         handleInput(dt);
         gameWorld.step(1 / 60f, 6, 2);
         player.update(dt);
+        boss1.update(dt);
     }
 
     @Override

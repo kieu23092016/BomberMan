@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.4" tiledversion="1.4.3" orientation="orthogonal" renderorder="right-down" width="17" height="15" tilewidth="45" tileheight="45" infinite="0" nextlayerid="8" nextobjectid="64">
+<map version="1.4" tiledversion="2020.10.30" orientation="orthogonal" renderorder="right-down" width="17" height="15" tilewidth="45" tileheight="45" infinite="0" nextlayerid="8" nextobjectid="64">
  <tileset firstgid="1" source="background_Play3.tsx"/>
  <tileset firstgid="316" source="boxgo.tsx"/>
  <tileset firstgid="317" source="boxgo2.tsx"/>
@@ -53,7 +53,7 @@
   <object id="25" x="269.934" y="88.6107" width="44.3053" height="47.5872"/>
   <object id="26" x="449.617" y="89.4311" width="45.1258" height="45.1258"/>
   <object id="27" x="539.048" y="43.4849" width="45.1258" height="45.9463"/>
-  <object id="28" x="630.12" y="89.4311" width="43.4849" height="44.3053"/>
+  <object id="28" x="630.12" y="90.1584" width="43.4849" height="44.3053"/>
   <object id="29" x="585.815" y="179.683" width="43.4849" height="44.3053"/>
   <object id="30" x="629.3" y="224.809" width="45.1258" height="45.1258"/>
   <object id="31" x="629.3" y="270.755" width="44.3053" height="44.3053"/>
@@ -90,7 +90,7 @@
   <object id="60" x="585.815" y="224.809" width="42.6644" height="45.1258"/>
   <object id="61" x="494.743" y="89.4311" width="45.9463" height="44.3053"/>
   <object id="62" x="540.689" y="90.2516" width="43.4849" height="43.4849"/>
-  <object id="63" x="584.174" y="90.2516" width="45.1258" height="43.4849"/>
+  <object id="63" x="584.538" y="90.0698" width="45.1258" height="43.4849"/>
  </objectgroup>
  <objectgroup id="7" name="stone">
   <object id="1" x="-0.820469" y="628.479" width="765.498" height="46.7667"/>

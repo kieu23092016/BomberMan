@@ -3,13 +3,18 @@ package uet.oop.game.Entities;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import uet.oop.game.Screens.PlayScreen;
 
-import static uet.oop.game.Manager.GameManager.PPM;
+import static uet.oop.game.Manager.GameManager.*;
 
 
 public class Bomber extends Entity {
+    @Override
+    public void onHeadHit() {
+
+    }
     public enum State{DEAD, UP, DOWN, LEFT, RIGHT};
     public State currentState;
     public State previousState;
@@ -24,10 +29,10 @@ public class Bomber extends Entity {
     public Bomber(PlayScreen playScreen, TextureAtlas textureAtlas){
         super(textureAtlas.findRegion("bebong_down"));
         this.gameWorld = playScreen.getGameWorld();
-        currentState = State.LEFT;
+        /*currentState = State.LEFT;
         previousState = State.LEFT;
         stateTimer = 0;
-        runningRight = true;
+        runningRight = true;*/
 
         /*Array<TextureRegion> frames = new Array<TextureRegion>();
         for(int i = 1; i<4; i++)
@@ -62,23 +67,6 @@ public class Bomber extends Entity {
     }
     public TextureRegion getFrame(float dt){
         TextureRegion region;
-        /*switch (currentState){
-            case Up:
-                region = bomberUp;
-                break;
-            case Down:
-                region = bomberDown;
-            case Left:
-                region = bomberLeft;
-            case Right:
-                region = bomberRight;
-            default:
-                region = bomberRight;
-                break;
-        }
-        //if((bomberBody.getLinearVelocity().x<0 || !runningRight)&& region.isFlipX())
-        //stateTimer = currentState==previousState? stateTimer+dt:0;
-        //previousState = currentState;*/
         if(body.getLinearVelocity().y>0)
             region = bomberUp;
         else if(body.getLinearVelocity().y<0)
@@ -98,7 +86,33 @@ public class Bomber extends Entity {
         CircleShape shape = new CircleShape();
         shape.setRadius(16/ PPM);
 
+        fdef.filter.categoryBits = BOMBER_BIT;
+        fdef.filter.maskBits = BRICK_BIT | STONE_BIT;
         fdef.shape = shape;
         body.createFixture(fdef);
+
+        EdgeShape edgeUp = new EdgeShape();
+        edgeUp.set(new Vector2(-8/PPM, 16/PPM), new Vector2(8/PPM, 16/PPM));
+        fdef.shape = edgeUp;
+        fdef.isSensor = true;
+        body.createFixture(fdef).setUserData("head");
+
+        EdgeShape edgeLeft = new EdgeShape();
+        edgeLeft.set(new Vector2(16/PPM, -8/PPM), new Vector2(16/PPM, 8/PPM));
+        fdef.shape = edgeLeft;
+        fdef.isSensor = true;
+        body.createFixture(fdef).setUserData("head");
+
+        EdgeShape edgeRight = new EdgeShape();
+        edgeRight.set(new Vector2(-16/PPM, -8/PPM), new Vector2(-16/PPM, 8/PPM));
+        fdef.shape = edgeRight;
+        fdef.isSensor = true;
+        body.createFixture(fdef).setUserData("head");
+
+        EdgeShape edgeDown = new EdgeShape();
+        edgeDown.set(new Vector2(-8/PPM, -16/PPM), new Vector2(8/PPM, -16/PPM));
+        fdef.shape = edgeDown;
+        fdef.isSensor = true;
+        body.createFixture(fdef).setUserData("head");
     }
 }
