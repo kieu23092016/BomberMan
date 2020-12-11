@@ -61,6 +61,15 @@ public class Bomber extends Entity {
         setBounds(45,0,45/PPM,56/PPM);
         setRegion(bomberLeft);
     }
+
+    public float getBomberX() {
+        return this.body.getPosition().x;
+    }
+
+    public float getBomberY() {
+        return this.body.getPosition().y;
+    }
+
     public void update(float dt){
         setPosition(body.getPosition().x-getWidth()/2, body.getPosition().y-getHeight()/2);
         setRegion(getFrame(dt));

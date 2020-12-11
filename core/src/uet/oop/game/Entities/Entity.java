@@ -46,6 +46,7 @@ public abstract class Entity extends Sprite {
         PolygonShape polygonShape = new PolygonShape();
         FixtureDef fixtureDef = new FixtureDef();
     }
+    public Entity() {}
     public abstract void onHeadHit();
     public void setCategory(short bit){
         Filter filter = new Filter();
