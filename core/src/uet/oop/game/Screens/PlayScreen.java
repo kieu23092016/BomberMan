@@ -89,7 +89,7 @@ public class PlayScreen implements Screen {
         boss1 = new Boss1(gameWorld, map, boss1Atlas);
         animation = boss1.animation;
         gameWorld.setContactListener(new WorldContactListener());
-        music = BombermanGame.manager.get("audio/music/menu1.ogg", Music.class);
+        music = BombermanGame.manager.get("audio/music/playmusic (2).ogg", Music.class);
         music.setLooping(true);
         music.play();
 
