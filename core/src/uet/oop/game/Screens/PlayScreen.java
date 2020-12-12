@@ -21,6 +21,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import uet.oop.game.BombermanGame;
 import uet.oop.game.Entities.*;
 import uet.oop.game.Manager.WorldContactListener;
+import uet.oop.game.Scence.Hud;
 
 import static uet.oop.game.Manager.GameManager.*;
 import static uet.oop.game.Manager.GameManager.PPM;
@@ -44,7 +45,7 @@ public class PlayScreen implements Screen {
     private Bomber player;
     private Boss1 boss1;
     private float dt = 1 / 5f;
-
+    private Hud hud;
     private Animation animation;
     private Music music;
     public float elapsedTime = 0;
@@ -56,6 +57,7 @@ public class PlayScreen implements Screen {
     public PlayScreen(BombermanGame bombermanGame) {
 
         this.game = bombermanGame;
+        hud = new Hud(game.batch);
 
         camera = new OrthographicCamera(V_WIDTH / PPM, V_HEIGHT / PPM);
         viewport = new FitViewport(V_WIDTH / PPM, V_HEIGHT / PPM, camera);
@@ -96,10 +98,11 @@ public class PlayScreen implements Screen {
 
         //TODO: test flame
         bomb = new Bomb(player, bombAtlas);
-        flame = new Flame(bomb, bombAtlas, Flame.Direction.CENTER, true, 32/PPM, 32/PPM);
+        flame = new Flame(bomb, bombAtlas, Flame.Direction.CENTER, true, 32 / PPM, 32 / PPM);
 
         music = BombermanGame.manager.get("audio/music/playmusic (2).ogg", Music.class);
         music.setLooping(true);
+        music.setVolume(0.3f);
         music.play();
 
     }
@@ -131,6 +134,8 @@ public class PlayScreen implements Screen {
         //game.batch.draw((TextureRegion) animation.getKeyFrame(elapsedTime, true), 10 / PPM, 20 / PPM, 45 / PPM, 45 / PPM);
         game.batch.end();
         update(dt);
+        game.batch.setProjectionMatrix(hud.stage.getCamera().combined);
+        hud.stage.draw();
         //box2DDebugRenderer.setDrawBodies(false);
         box2DDebugRenderer.render(gameWorld, camera.combined);
     }
@@ -157,6 +162,7 @@ public class PlayScreen implements Screen {
         handleInput(dt);
         gameWorld.step(1 / 60f, 6, 2);
         player.update(dt);
+        hud.update(dt);
         boss1.update(dt);
     }
 
@@ -182,6 +188,11 @@ public class PlayScreen implements Screen {
 
     @Override
     public void dispose() {
+        hud.dispose();
 
+    }
+
+    public Hud getHud() {
+        return hud;
     }
 }

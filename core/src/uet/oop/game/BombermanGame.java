@@ -18,12 +18,12 @@ public class BombermanGame extends Game {
         manager = new AssetManager();
         manager.load("audio/music/playmusic (2).ogg", Music.class);
         //manager.load("audio/music/menu1.ogg", Music.class);
-        //manager.load("audio/sound/bomb_bang.wav", Sound.class);
-        //manager.load("audio/sound/bomber_die.wav", Sound.class);
-        //manager.load("audio/sound/item.wav", Sound.class);
-        //manager.load("audio/sound/boss_die.wav", Sound.class);
-        //manager.load("audio/sound/newbomb.wav", Sound.class);
-        //manager.load("audio/sound/win.wav", Sound.class);
+        manager.load("audio/sound/bomb_bang.wav", Sound.class);
+        manager.load("audio/sound/bomber_die.wav", Sound.class);
+        manager.load("audio/sound/item.wav", Sound.class);
+        manager.load("audio/sound/boss_die.wav", Sound.class);
+        manager.load("audio/sound/newbomb.wav", Sound.class);
+        manager.load("audio/sound/win.wav", Sound.class);
         manager.finishLoading();
         setScreen(new PlayScreen(this));
     }

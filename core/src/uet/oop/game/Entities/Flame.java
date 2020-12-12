@@ -1,12 +1,14 @@
 package uet.oop.game.Entities;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
+import uet.oop.game.BombermanGame;
 
 import static uet.oop.game.Manager.GameManager.*;
 
@@ -121,7 +123,7 @@ public class Flame extends Entity {
 
     @Override
     public void onHeadHit() {
-
+        BombermanGame.manager.get("audio/sound/bomb_bang.wav", Sound.class).play();
     }
 
     @Override
