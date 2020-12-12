@@ -186,6 +186,8 @@ public class Bomb extends Entity {
         CircleShape shape = new CircleShape();
         shape.setRadius(RADIUS_BODY / PPM);
 
+        fdef.filter.categoryBits = BOMB_BIT;
+        fdef.filter.maskBits = BOMBER_BIT | BOSS1_BIT;
         fdef.shape = shape;
         body.createFixture(fdef);
 

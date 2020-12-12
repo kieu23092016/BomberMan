@@ -13,7 +13,7 @@ public class WorldContactListener implements ContactListener {
     public void beginContact(Contact contact) {
         Fixture fixture1 = contact.getFixtureA();
         Fixture fixture2 = contact.getFixtureB();
-        if (fixture1.getUserData() == "head" || fixture2.getUserData() == "head") {
+        /*if (fixture1.getUserData() == "head" || fixture2.getUserData() == "head") {
             Fixture head = fixture1.getUserData() == "head" ? fixture1 : fixture2;
             Fixture object = head == fixture1 ? fixture2 : fixture1;
             if (object.getUserData() != null && Entity.class.isAssignableFrom(object.getUserData().getClass())) {
@@ -48,7 +48,7 @@ public class WorldContactListener implements ContactListener {
 //                    Gdx.app.log("COLLIDE","ENEMY2");
 //                }
 //                break;
-        }
+        }*/
     }
 
     @Override

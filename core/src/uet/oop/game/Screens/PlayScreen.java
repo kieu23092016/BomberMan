@@ -149,7 +149,6 @@ public class PlayScreen implements Screen {
             player.body.applyLinearImpulse(new Vector2(0, -player.SPEED), player.body.getWorldCenter(), true);
         if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
             player.placeBomb(game.batch);
-
         }
     }
 
