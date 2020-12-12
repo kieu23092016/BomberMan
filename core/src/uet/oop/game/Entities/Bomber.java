@@ -13,10 +13,22 @@ import static uet.oop.game.Manager.GameManager.*;
 
 public class Bomber extends Entity {
 
+    public static final int BOMBER_WIDTH = 45;
+    public static final int BOMBER_HEIGHT = 56;
 
-    public List<Bomb> bombList = new ArrayList<Bomb>();
+    public float SPEED = 1f;
 
-    public enum State{DEAD, UP, DOWN, LEFT, RIGHT};
+
+    private List<Bomb> bombList = new ArrayList<Bomb>();
+
+    @Override
+    public void dispose() {
+
+    }
+
+    public enum State {DEAD, UP, DOWN, LEFT, RIGHT}
+
+    ;
     public State currentState;
     public State previousState;
     private TextureRegion player_left;
@@ -25,9 +37,9 @@ public class Bomber extends Entity {
     private TextureRegion bomberRight;
     private TextureRegion bomberDown;
     private float stateTimer;
-    private  boolean runningRight;
+    private boolean runningRight;
 
-    public Bomber(PlayScreen playScreen, TextureAtlas textureAtlas){
+    public Bomber(PlayScreen playScreen, TextureAtlas textureAtlas) {
         super(textureAtlas.findRegion("bebong_down"));
         this.gameWorld = playScreen.getGameWorld();
         /*currentState = State.LEFT;
@@ -54,47 +66,42 @@ public class Bomber extends Entity {
         frames.clear();*/
 
         defineCharacter();
-        bomberLeft = new TextureRegion(getTexture(), 45,0,45,56);
-        bomberRight = new TextureRegion(getTexture(), 90,0,45,56);
-        bomberDown= new TextureRegion(getTexture(), 0,0,45,56);
-        bomberUp = new TextureRegion(getTexture(), 135,2,45,56);
+        bomberLeft = new TextureRegion(getTexture(), 45, 0, BOMBER_WIDTH, BOMBER_HEIGHT);
+        bomberRight = new TextureRegion(getTexture(), 90, 0, BOMBER_WIDTH, BOMBER_HEIGHT);
+        bomberDown = new TextureRegion(getTexture(), 0, 0, BOMBER_WIDTH, BOMBER_HEIGHT);
+        bomberUp = new TextureRegion(getTexture(), 135, 2, BOMBER_WIDTH, BOMBER_HEIGHT);
 
-        setBounds(45,0,45/PPM,56/PPM);
+        setBounds(45, 0, BOMBER_WIDTH / PPM, BOMBER_HEIGHT / PPM);
         setRegion(bomberLeft);
     }
 
-    public float getBomberX() {
-        return this.body.getPosition().x;
-    }
 
-    public float getBomberY() {
-        return this.body.getPosition().y;
-    }
-
-    public void update(float dt){
-        setPosition(body.getPosition().x-getWidth()/2, body.getPosition().y-getHeight()/2);
+    public void update(float dt) {
+        setPosition(getPosAnimationX(), getPosAnimationY());
         setRegion(getFrame(dt));
     }
-    public TextureRegion getFrame(float dt){
+
+    public TextureRegion getFrame(float dt) {
         TextureRegion region;
-        if(body.getLinearVelocity().y>0)
+        if (body.getLinearVelocity().y > 0)
             region = bomberUp;
-        else if(body.getLinearVelocity().y<0)
+        else if (body.getLinearVelocity().y < 0)
             region = bomberDown;
-        else if(body.getLinearVelocity().x <0)
+        else if (body.getLinearVelocity().x < 0)
             region = bomberLeft;
         else region = bomberRight;
         return region;
     }
-    public void defineCharacter(){
+
+    public void defineCharacter() {
         BodyDef bodyDef = new BodyDef();
-        bodyDef.position.set(32/ PPM, 32/ PPM);
+        bodyDef.position.set(96 / PPM, 632 / PPM);
         bodyDef.type = BodyDef.BodyType.DynamicBody;
         body = gameWorld.createBody(bodyDef);
 
         FixtureDef fdef = new FixtureDef();
         CircleShape shape = new CircleShape();
-        shape.setRadius(16/ PPM);
+        shape.setRadius(16 / PPM);
 
         fdef.filter.categoryBits = BOMBER_BIT;
         fdef.filter.maskBits = BRICK_BIT | STONE_BIT;
@@ -102,25 +109,25 @@ public class Bomber extends Entity {
         body.createFixture(fdef);
 
         EdgeShape edgeUp = new EdgeShape();
-        edgeUp.set(new Vector2(-8/PPM, 16/PPM), new Vector2(8/PPM, 16/PPM));
+        edgeUp.set(new Vector2(-8 / PPM, 16 / PPM), new Vector2(8 / PPM, 16 / PPM));
         fdef.shape = edgeUp;
         fdef.isSensor = true;
         body.createFixture(fdef).setUserData("head");
 
         EdgeShape edgeLeft = new EdgeShape();
-        edgeLeft.set(new Vector2(16/PPM, -8/PPM), new Vector2(16/PPM, 8/PPM));
+        edgeLeft.set(new Vector2(16 / PPM, -8 / PPM), new Vector2(16 / PPM, 8 / PPM));
         fdef.shape = edgeLeft;
         fdef.isSensor = true;
         body.createFixture(fdef).setUserData("head");
 
         EdgeShape edgeRight = new EdgeShape();
-        edgeRight.set(new Vector2(-16/PPM, -8/PPM), new Vector2(-16/PPM, 8/PPM));
+        edgeRight.set(new Vector2(-16 / PPM, -8 / PPM), new Vector2(-16 / PPM, 8 / PPM));
         fdef.shape = edgeRight;
         fdef.isSensor = true;
         body.createFixture(fdef).setUserData("head");
 
         EdgeShape edgeDown = new EdgeShape();
-        edgeDown.set(new Vector2(-8/PPM, -16/PPM), new Vector2(8/PPM, -16/PPM));
+        edgeDown.set(new Vector2(-8 / PPM, -16 / PPM), new Vector2(8 / PPM, -16 / PPM));
         fdef.shape = edgeDown;
         fdef.isSensor = true;
         body.createFixture(fdef).setUserData("head");
@@ -129,12 +136,25 @@ public class Bomber extends Entity {
     public void placeBomb(Batch batch) {
         Bomb bomb = new Bomb(this, bombAtlas);
         bombList.add(bomb);
+        System.out.println("SIZE OF BOMB LIST IS: " + bombList.size());
+
     }
 
     public void draw(Batch batch, float dt) {
-        for (int i = 0 ; i< bombList.size(); i++) {
-            bombList.get(i).draw(batch, dt);
+        if (bombList.size() > 0) {
+            for (int i = 0; i < bombList.size(); i++) {
+                bombList.get(i).draw(batch, dt);
+                bombList.get(i).update(dt);
+                System.out.println("BOMB" + " " + i + " : timeToExplode is: " + bombList.get(i).timeToExplode);
+
+                if (bombList.get(i).timeToExplode == 0) {
+                    bombList.get(i).dispose();
+                    bombList.remove(i);
+                }
+                System.out.println("SIZE OF BOMB LIST IS: " + bombList.size());
+            }
         }
+
         this.draw(batch);
 
     }

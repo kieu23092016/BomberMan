@@ -20,4 +20,9 @@ public class Stone extends Entity {
     public void onHeadHit() {
         Gdx.app.log("Stone", "Collide");
     }
+
+    @Override
+    public void dispose() {
+
+    }
 }

@@ -15,7 +15,7 @@ import javax.rmi.CORBA.Tie;
 
 import static uet.oop.game.Manager.GameManager.PPM;
 
-public abstract class Entity extends Sprite {
+public abstract class Entity extends Sprite implements Disposable {
     public Body body;
     protected World gameWorld;
     protected TiledMap map;
@@ -43,12 +43,30 @@ public abstract class Entity extends Sprite {
     }
     public Entity(TextureRegion region) {
         super(region);
-        BodyDef bodyDef = new BodyDef();
+        /*BodyDef bodyDef = new BodyDef();
         PolygonShape polygonShape = new PolygonShape();
-        FixtureDef fixtureDef = new FixtureDef();
+        FixtureDef fixtureDef = new FixtureDef();*/
     }
     public Entity() {}
+
+    public float getX() {
+        return this.body.getPosition().x;
+    }
+
+    public float getY() {
+        return this.body.getPosition().y;
+    }
+
+    public float getPosAnimationX() {
+        return body.getPosition().x - getWidth() / 2;
+    }
+
+    public float getPosAnimationY() {
+        return body.getPosition().y - getHeight() / 2;
+    }
+
     public abstract void onHeadHit();
+
     public void setCategory(short bit){
         Filter filter = new Filter();
         filter.categoryBits = bit;

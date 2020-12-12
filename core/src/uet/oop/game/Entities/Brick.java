@@ -21,4 +21,9 @@ public class Brick extends Entity {
         //setCategory(DESTROY_BIT);
         //getCell(1).setTile(null);
     }
+
+    @Override
+    public void dispose() {
+
+    }
 }

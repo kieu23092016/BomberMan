@@ -111,7 +111,6 @@ public class PlayScreen implements Screen {
         game.batch.begin();
 
         player.draw(game.batch, dt);
-        handleInput(dt);
 
         boss1.draw(game.batch);
 
@@ -126,20 +125,23 @@ public class PlayScreen implements Screen {
     public void handleInput(float dt) {
         if (Gdx.input.isKeyPressed(Input.Keys.RIGHT) && player.body.getLinearVelocity().x <= 2) {
             //player.bomberBody.applyLinearImpulse(new Vector2(0.1f, 0), player.bomberBody.getWorldCenter(), true);
-            player.body.setLinearVelocity(0.4f, 0.0F);
-        } else player.body.setLinearVelocity(0.0f, 0.0F);
+            player.body.setLinearVelocity(player.SPEED, 0);
+        } else player.body.setLinearVelocity(0, 0);
         if (Gdx.input.isKeyPressed(Input.Keys.LEFT) && player.body.getLinearVelocity().x >= -2) {
-            player.body.applyLinearImpulse(new Vector2(-0.4f, 0), player.body.getWorldCenter(), true);
+            player.body.applyLinearImpulse(new Vector2(-player.SPEED, 0), player.body.getWorldCenter(), true);
         }
         if (Gdx.input.isKeyPressed(Input.Keys.UP))
-            player.body.applyLinearImpulse(new Vector2(0, 0.4f), player.body.getWorldCenter(), true);
+            player.body.applyLinearImpulse(new Vector2(0, player.SPEED), player.body.getWorldCenter(), true);
         if (Gdx.input.isKeyPressed(Input.Keys.DOWN))
-            player.body.applyLinearImpulse(new Vector2(0, -0.4f), player.body.getWorldCenter(), true);
-        if (Gdx.input.isKeyPressed(Input.Keys.SPACE))
+            player.body.applyLinearImpulse(new Vector2(0, -player.SPEED), player.body.getWorldCenter(), true);
+        if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
             player.placeBomb(game.batch);
+
+        }
     }
 
     public void update(float dt) {
+        handleInput(dt);
         gameWorld.step(1 / 60f, 6, 2);
         player.update(dt);
         boss1.update(dt);
