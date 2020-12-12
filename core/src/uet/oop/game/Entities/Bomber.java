@@ -16,7 +16,7 @@ public class Bomber extends Entity {
     public static final int BOMBER_WIDTH = 45;
     public static final int BOMBER_HEIGHT = 56;
 
-    public static short bomberMaskBit = BRICK_BIT | STONE_BIT | BOSS1_BIT | FLAME_BIT;
+   // public static short bomberMaskBit = BRICK_BIT | STONE_BIT | BOSS1_BIT | FLAME_BIT;
 
     public float SPEED = 1f;
 
@@ -102,33 +102,33 @@ public class Bomber extends Entity {
         shape.setRadius(16 / PPM);
 
         fdef.filter.categoryBits = BOMBER_BIT;
-        fdef.filter.maskBits = BRICK_BIT | STONE_BIT;
+        fdef.filter.maskBits = BRICK_BIT | STONE_BIT |BOMB_BIT | BOSS1_BIT;
         fdef.shape = shape;
         body.createFixture(fdef);
 
-        EdgeShape edgeUp = new EdgeShape();
+        /*EdgeShape edgeUp = new EdgeShape();
         edgeUp.set(new Vector2(-8 / PPM, 16 / PPM), new Vector2(8 / PPM, 16 / PPM));
         fdef.shape = edgeUp;
         fdef.isSensor = true;
-        body.createFixture(fdef).setUserData("head");
+        body.createFixture(fdef).setUserData(this);
 
         EdgeShape edgeLeft = new EdgeShape();
         edgeLeft.set(new Vector2(16 / PPM, -8 / PPM), new Vector2(16 / PPM, 8 / PPM));
         fdef.shape = edgeLeft;
         fdef.isSensor = true;
-        body.createFixture(fdef).setUserData("head");
+        body.createFixture(fdef).setUserData(this);
 
         EdgeShape edgeRight = new EdgeShape();
         edgeRight.set(new Vector2(-16 / PPM, -8 / PPM), new Vector2(-16 / PPM, 8 / PPM));
         fdef.shape = edgeRight;
         fdef.isSensor = true;
-        body.createFixture(fdef).setUserData("head");
+        body.createFixture(fdef).setUserData(this);
 
         EdgeShape edgeDown = new EdgeShape();
         edgeDown.set(new Vector2(-8 / PPM, -16 / PPM), new Vector2(8 / PPM, -16 / PPM));
         fdef.shape = edgeDown;
         fdef.isSensor = true;
-        body.createFixture(fdef).setUserData("head");
+        body.createFixture(fdef).setUserData(this);*/
     }
 
     public void placeBomb(Batch batch) {

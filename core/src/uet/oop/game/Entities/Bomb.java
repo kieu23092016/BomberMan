@@ -46,8 +46,8 @@ public class Bomb extends Entity {
 
     private boolean checkCanExplodeThrough(Vector2 fromV, Vector2 toV) {
         canExplodeThrough = true;
+        System.out.println(fromV.x + " x1"+fromV.y+"y1"+toV.x+"x2"+toV.y+"y2");
         RayCastCallback rayCastCallback = new RayCastCallback() {
-
             @Override
             public float reportRayFixture(Fixture fixture, Vector2 point, Vector2 normal, float fraction) {
                 if (fixture.getFilterData().categoryBits == STONE_BIT) {
@@ -92,14 +92,18 @@ public class Bomb extends Entity {
 
     public void exploded(float x, float y) {
 
-        float distance = 0.4f;
+        float distance = 45/PPM;
         boolean isLast = false;
         //center flame
         explosion.add(new Flame(this, bombAtlas, Flame.Direction.CENTER, false, getX(), getY()));
 
         // up
         for (int i = 0; i < maxLength_flame; i++) {
+<<<<<<< HEAD
             if (!checkCanExplodeThrough(fromV.set(x, y + i), toV.set(x, y + (i + 1) * distance))) {
+=======
+            if (!checkCanExplodeThrough(fromV.set(x, y + distance*i), toV.set(x, y + (i+1)*distance))) {
+>>>>>>> 455e2a3e57ffe76c2f156f712b96968ea4378fd4
                 break;
             }
             if (i == maxLength_flame - 1) isLast = true;
@@ -109,7 +113,7 @@ public class Bomb extends Entity {
 
         // down
         for (int i = 0; i < maxLength_flame; i++) {
-            if (!checkCanExplodeThrough(fromV.set(x, y - i), toV.set(x, y - i - 1))) {
+            if (!checkCanExplodeThrough(fromV.set(x, y - i*distance), toV.set(x, y -(i+1)*distance ))) {
                 break;
             }
             if (i == maxLength_flame - 1) isLast = true;
@@ -119,7 +123,7 @@ public class Bomb extends Entity {
 
         // left
         for (int i = 0; i < maxLength_flame; i++) {
-            if (!checkCanExplodeThrough(fromV.set(x - i, y), toV.set(x - i - 1, y))) {
+            if (!checkCanExplodeThrough(fromV.set(x - i*distance, y), toV.set(x - (i + 1)*distance, y))) {
                 break;
             }
             if (i == maxLength_flame - 1) isLast = true;
@@ -129,7 +133,7 @@ public class Bomb extends Entity {
 
         // right
         for (int i = 0; i < maxLength_flame; i++) {
-            if (!checkCanExplodeThrough(fromV.set(x + i, y), toV.set(x + i + 1, y))) {
+            if (!checkCanExplodeThrough(fromV.set(x + i*distance, y), toV.set(x + (i + 1)*distance, y))) {
                 break;
             }
             if (i == maxLength_flame - 1) isLast = true;
@@ -187,6 +191,8 @@ public class Bomb extends Entity {
         CircleShape shape = new CircleShape();
         shape.setRadius(RADIUS_BODY / PPM);
 
+        fdef.filter.categoryBits = BOMB_BIT;
+        fdef.filter.maskBits = BOSS1_BIT;
         fdef.shape = shape;
         body.createFixture(fdef);
 

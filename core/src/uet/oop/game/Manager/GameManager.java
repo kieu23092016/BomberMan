@@ -21,10 +21,10 @@ public class GameManager {
     public static final short DEFAULT_BIT = 1;
     public static final short BOMBER_BIT = 2;
     public static final short BRICK_BIT = 4;
-    public static final short STONE_BIT = 6;
-    public static final short DESTROY_BIT = 8;
-    public static final short BOSS1_BIT = 10;
-    public static final short FLAME_BIT = 12;
-
+    public static final short STONE_BIT = 8;
+    public static final short DESTROY_BIT = 128;
+    public static final short BOSS1_BIT = 16;
+    public static final short FLAME_BIT = 32;
+    public static final short BOMB_BIT = 64;
 
 }

@@ -97,8 +97,13 @@ public class PlayScreen implements Screen {
         gameWorld.setContactListener(new WorldContactListener());
 
         //TODO: test flame
+<<<<<<< HEAD
         bomb = new Bomb(player, bombAtlas);
         flame = new Flame(bomb, bombAtlas, Flame.Direction.CENTER, true, 32 / PPM, 32 / PPM);
+=======
+       // bomb = new Bomb(player, bombAtlas);
+        //flame = new Flame(bomb, bombAtlas, Flame.Direction.CENTER, true, 32/PPM, 32/PPM);
+>>>>>>> 455e2a3e57ffe76c2f156f712b96968ea4378fd4
 
         music = BombermanGame.manager.get("audio/music/playmusic (2).ogg", Music.class);
         music.setLooping(true);
@@ -127,8 +132,8 @@ public class PlayScreen implements Screen {
         boss1.draw(game.batch);
 
         //TODO: test flame
-        bomb.draw(game.batch);
-        flame.draw(game.batch);
+        //bomb.draw(game.batch);
+        //flame.draw(game.batch);
 
         elapsedTime += Gdx.graphics.getDeltaTime();
         //game.batch.draw((TextureRegion) animation.getKeyFrame(elapsedTime, true), 10 / PPM, 20 / PPM, 45 / PPM, 45 / PPM);
@@ -154,7 +159,6 @@ public class PlayScreen implements Screen {
             player.body.applyLinearImpulse(new Vector2(0, -player.SPEED), player.body.getWorldCenter(), true);
         if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
             player.placeBomb(game.batch);
-
         }
     }
 
