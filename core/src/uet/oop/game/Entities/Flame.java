@@ -13,8 +13,8 @@ import static uet.oop.game.Manager.GameManager.*;
 
 public class Flame extends Entity {
 
-    public static final float WIDTH_FLAME = 40;
-    public static final float HEIGHT_FLAME = 40;
+    public static final float WIDTH_FLAME = 45;
+    public static final float HEIGHT_FLAME = 45;
 
     public static short defaultMaskBits = BOMBER_BIT | BRICK_BIT | STONE_BIT | BOSS1_BIT;
 
@@ -102,13 +102,13 @@ public class Flame extends Entity {
         body = gameWorld.createBody(bodyDef);
 
         PolygonShape polygonShape = new PolygonShape();
-        polygonShape.setAsBox(0.2f, 0.2f);
+        polygonShape.setAsBox(45/2/PPM, 45/2/PPM);
         FixtureDef fixtureDef = new FixtureDef();
 
         fixtureDef.shape = polygonShape;
-        fixtureDef.filter.categoryBits = FLAME_BIT;
-        fixtureDef.filter.maskBits = defaultMaskBits;
-        fixtureDef.isSensor = true;
+        //fixtureDef.filter.categoryBits = FLAME_BIT;
+        //fixtureDef.filter.maskBits = defaultMaskBits;
+        //fixtureDef.isSensor = true;
         body.createFixture(fixtureDef);
 
     }

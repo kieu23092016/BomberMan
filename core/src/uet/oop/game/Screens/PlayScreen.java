@@ -95,8 +95,8 @@ public class PlayScreen implements Screen {
         gameWorld.setContactListener(new WorldContactListener());
 
         //TODO: test flame
-        bomb = new Bomb(player, bombAtlas);
-        flame = new Flame(bomb, bombAtlas, Flame.Direction.CENTER, true, 32/PPM, 32/PPM);
+       // bomb = new Bomb(player, bombAtlas);
+        //flame = new Flame(bomb, bombAtlas, Flame.Direction.CENTER, true, 32/PPM, 32/PPM);
 
         music = BombermanGame.manager.get("audio/music/playmusic (2).ogg", Music.class);
         music.setLooping(true);
@@ -124,8 +124,8 @@ public class PlayScreen implements Screen {
         boss1.draw(game.batch);
 
         //TODO: test flame
-        bomb.draw(game.batch);
-        flame.draw(game.batch);
+        //bomb.draw(game.batch);
+        //flame.draw(game.batch);
 
         elapsedTime += Gdx.graphics.getDeltaTime();
         //game.batch.draw((TextureRegion) animation.getKeyFrame(elapsedTime, true), 10 / PPM, 20 / PPM, 45 / PPM, 45 / PPM);
