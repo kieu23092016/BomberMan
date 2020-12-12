@@ -1,48 +1,116 @@
 package uet.oop.game.Entities;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.CircleShape;
-import com.badlogic.gdx.physics.box2d.FixtureDef;
-import com.badlogic.gdx.physics.box2d.PolygonShape;
+import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
-import javafx.animation.Animation;
 
 import static uet.oop.game.Manager.GameManager.PPM;
 
+
 public class Flame extends Entity {
 
-    public Animation verticalAnimation;
-    public Animation horizontalAnimation;
+    public static final float WIDTH_FLAME = 32;
+    public static final float HEIGHT_FLAME = 32;
 
+
+    public enum Direction {CENTER, LEFT, RIGHT, UP, DOWN};
+    public Direction direction;
+
+    public boolean isLastFrame = false;
+    public Animation flameAnimation;
     public float stateTimer;
 
 
-    public Flame(Bomb bomb, int direction) {
+
+    public Flame(Bomb bomb, TextureAtlas textureAtlas,Direction direction, boolean isLastFrame, float x, float y) {
         this.gameWorld = bomb.gameWorld;
+        this.direction = direction;
+        this.isLastFrame = isLastFrame;
         stateTimer = 0;
 
-        Array<TextureRegion> frames = new Array<TextureRegion>();
+        createAnimation(textureAtlas);
 
-
-        defineCharacter(bomb);
+        defineCharacter(bomb, x, y);
+        setBounds(getX(), getY(), WIDTH_FLAME/PPM, HEIGHT_FLAME/PPM);
+        setPosition(getPosAnimationX(), getPosAnimationY());
     }
 
-    public void defineCharacter(Bomb bomb) {
-        BodyDef bodyDef = new BodyDef();
-        PolygonShape polygonShape = new PolygonShape();
-        FixtureDef fixtureDef = new FixtureDef();
+    public void createAnimation(TextureAtlas textureAtlas) {
+        TextureRegion textureRegion = new TextureRegion(textureAtlas.findRegion("Explosion"));
+        Array<TextureRegion> frames = new Array<>();
 
-        bodyDef.type = BodyDef.BodyType.StaticBody;
-        bodyDef.position.set(bomb.getX(),bomb.getY());
+        switch (direction) {
+            case CENTER:
+                for (int i = 0; i < 5; i++) {
+                    frames.add(new TextureRegion(textureRegion, i * 16, 16, 16, 16));
+                }
+                flameAnimation = new Animation(0.15f, frames);
+                break;
+            case UP:
+                for (int j = 0; j < 5; j++) {
+                    if (isLastFrame)
+                        frames.add(new TextureRegion(textureRegion, j * 16, 0, 16, 16));
+                    else
+                        frames.add(new TextureRegion(textureRegion, j * 16, 16 * 2, 16, 16));
+                }
+                flameAnimation = new Animation(0.15f, frames);
+                break;
+            case DOWN:
+                for (int j = 0; j < 5; j++) {
+                    if (isLastFrame)
+                        frames.add(new TextureRegion(textureRegion, j * 16, 16 * 3, 16, 16));
+                     else
+                         frames.add(new TextureRegion(textureRegion, j * 16, 16 * 2, 16, 16));
+                }
+                flameAnimation = new Animation(0.15f, frames);
+                break;
+            case LEFT:
+                for (int j = 0; j < 5; j++) {
+                    if (isLastFrame)
+                        frames.add(new TextureRegion(textureRegion, j * 16, 16 * 6, 16, 16));
+                    else
+                        frames.add(new TextureRegion(textureRegion, j * 16, 16 * 4, 16, 16));
+                }
+                flameAnimation = new Animation(0.15f, frames);
+                break;
+            case RIGHT:
+                for (int j = 0; j < 5; j++) {
+                    if (isLastFrame)
+                        frames.add(new TextureRegion(textureRegion, j * 16, 16 * 5, 16, 16));
+                    else
+                        frames.add(new TextureRegion(textureRegion, j * 16, 16 * 4, 16, 16));
+                }
+                flameAnimation = new Animation(0.15f, frames);
+                break;
+        }
+    }
+
+    public void defineCharacter(Bomb bomb, float x, float y) {
+        BodyDef bodyDef = new BodyDef();
+        bodyDef.type = BodyDef.BodyType.DynamicBody;
+        bodyDef.position.set(x, y);
         body = gameWorld.createBody(bodyDef);
 
-        polygonShape.setAsBox(rectangle.getWidth() / 2 / PPM, rectangle.getHeight() / 2 / PPM);
+        PolygonShape polygonShape = new PolygonShape();
+        polygonShape.setAsBox(20/PPM, 20/PPM);
+        FixtureDef fixtureDef = new FixtureDef();
 
         fixtureDef.shape = polygonShape;
-        fixture = body.createFixture(fixtureDef);
+        /*fixtureDef.filter.categoryBits = GameManager.EXPLOSION_BIT;
+        fixtureDef.filter.maskBits = Explosion.defaultMaskBits;
+        fixtureDef.isSensor = true;*/
+        body.createFixture(fixtureDef);
 
+    }
+
+    public void draw(Batch batch) {
+        stateTimer += Gdx.graphics.getDeltaTime();
+        batch.draw(flameAnimation.getKeyFrame(stateTimer, true), getPosAnimationX(),
+                getPosAnimationY(), WIDTH_FLAME / PPM, HEIGHT_FLAME / PPM);
     }
 
     @Override

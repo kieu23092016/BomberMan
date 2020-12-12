@@ -143,11 +143,11 @@ public class Bomber extends Entity {
     public void draw(Batch batch, float dt) {
         if (bombList.size() > 0) {
             for (int i = 0; i < bombList.size(); i++) {
-                bombList.get(i).draw(batch, dt);
+                bombList.get(i).draw(batch);
                 bombList.get(i).update(dt);
                 System.out.println("BOMB" + " " + i + " : timeToExplode is: " + bombList.get(i).timeToExplode);
 
-                if (bombList.get(i).timeToExplode == 0) {
+                if (bombList.get(i).timeExploding == 0) {
                     bombList.get(i).dispose();
                     bombList.remove(i);
                 }

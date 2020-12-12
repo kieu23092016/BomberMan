@@ -27,6 +27,9 @@ import static uet.oop.game.Manager.GameManager.PPM;
 
 public class PlayScreen implements Screen {
 
+    //TODO: test flame
+    private Flame flame;
+    private Bomb bomb;
 
     private BombermanGame game;
 
@@ -37,6 +40,7 @@ public class PlayScreen implements Screen {
 
     private World gameWorld;
     private Box2DDebugRenderer box2DDebugRenderer;
+
     private Bomber player;
     private Boss1 boss1;
     private float dt = 1 / 5f;
@@ -89,6 +93,11 @@ public class PlayScreen implements Screen {
         boss1 = new Boss1(gameWorld, map, boss1Atlas);
         animation = boss1.animation;
         gameWorld.setContactListener(new WorldContactListener());
+
+        //TODO: test flame
+        bomb = new Bomb(player, bombAtlas);
+        flame = new Flame(bomb, bombAtlas, Flame.Direction.CENTER, true, 32/PPM, 32/PPM);
+
         music = BombermanGame.manager.get("audio/music/playmusic (2).ogg", Music.class);
         music.setLooping(true);
         music.play();
@@ -113,6 +122,10 @@ public class PlayScreen implements Screen {
         player.draw(game.batch, dt);
 
         boss1.draw(game.batch);
+
+        //TODO: test flame
+        bomb.draw(game.batch);
+        flame.draw(game.batch);
 
         elapsedTime += Gdx.graphics.getDeltaTime();
         //game.batch.draw((TextureRegion) animation.getKeyFrame(elapsedTime, true), 10 / PPM, 20 / PPM, 45 / PPM, 45 / PPM);
