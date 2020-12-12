@@ -16,19 +16,17 @@ public class Bomber extends Entity {
     public static final int BOMBER_WIDTH = 45;
     public static final int BOMBER_HEIGHT = 56;
 
+    public static short bomberMaskBit = BRICK_BIT | STONE_BIT | BOSS1_BIT | FLAME_BIT;
+
     public float SPEED = 1f;
 
 
     private List<Bomb> bombList = new ArrayList<Bomb>();
 
-    @Override
-    public void dispose() {
 
-    }
 
     public enum State {DEAD, UP, DOWN, LEFT, RIGHT}
 
-    ;
     public State currentState;
     public State previousState;
     private TextureRegion player_left;
@@ -161,6 +159,10 @@ public class Bomber extends Entity {
 
     @Override
     public void onHeadHit() {
+
+    }
+    @Override
+    public void dispose() {
 
     }
 }

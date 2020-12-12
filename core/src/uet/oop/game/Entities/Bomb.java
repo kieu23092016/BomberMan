@@ -13,7 +13,7 @@ import com.badlogic.gdx.utils.Array;
 import java.util.ArrayList;
 import java.util.List;
 
-import static uet.oop.game.Manager.GameManager.PPM;
+import static uet.oop.game.Manager.GameManager.*;
 
 public class Bomb extends Entity {
 
@@ -29,7 +29,7 @@ public class Bomb extends Entity {
     public State state;
 
     public float timeToExplode = 120; //thời gian hẹn để bom nổ
-    public float timeExploding = 30; //thời gian nổ
+    public float timeExploding = 100; //thời gian nổ
     public boolean canExplodeThrough = false;
 
     public boolean isExploded = false;
@@ -43,27 +43,24 @@ public class Bomb extends Entity {
 
     private boolean checkCanExplodeThrough(Vector2 fromV, Vector2 toV) {
         canExplodeThrough = true;
-        /*RayCastCallback rayCastCallback = new RayCastCallback() {
+        RayCastCallback rayCastCallback = new RayCastCallback() {
 
             @Override
             public float reportRayFixture(Fixture fixture, Vector2 point, Vector2 normal, float fraction) {
-                if (fixture.getFilterData().categoryBits == GameManager.INDESTRUCTIIBLE_BIT) {
+                if (fixture.getFilterData().categoryBits == STONE_BIT) {
                     canExplodeThrough = false;
                     return 0;
                 }
 
-                if (fixture.getFilterData().categoryBits == GameManager.BREAKABLE_BIT) {
+                if (fixture.getFilterData().categoryBits == BRICK_BIT) {
                     canExplodeThrough = false;
-                    *//*Entity e = (Entity) fixture.getBody().getUserData();
-                    Breakable breakable = e.getComponent(Breakable.class);
-                    breakable.state = Breakable.State.EXPLODING;*//*
+
                     return 0;
                 }
                 return 0;
             }
         };
-*/
-        //gameWorld.rayCast(rayCastCallback, fromV, toV);
+        gameWorld.rayCast(rayCastCallback, fromV, toV);
         return canExplodeThrough;
     }
 
@@ -83,7 +80,7 @@ public class Bomb extends Entity {
 
 
         defineCharacter();
-        exploded(getX(), getY());
+        exploded(getPosAnimationX(), getPosAnimationY());
 
         setBounds(player.getX(), player.getY(), WIDTH / PPM, HEIGHT / PPM);
         setPosition(getPosAnimationX(), getPosAnimationY());
@@ -91,20 +88,19 @@ public class Bomb extends Entity {
     }
 
     public void exploded(float x, float y) {
-        x = MathUtils.floor(x) + 0.5f;
-        y = MathUtils.floor(y) + 0.5f;
 
+        float distance = 0.4f;
         boolean isLast = false;
         //center flame
         explosion.add(new Flame(this, bombAtlas, Flame.Direction.CENTER, false, getX(), getY()));
 
         // up
         for (int i = 0; i < maxLength_flame; i++) {
-            if (!checkCanExplodeThrough(fromV.set(x, y + i), toV.set(x, y + i + 1))) {
+            if (!checkCanExplodeThrough(fromV.set(x, y + i), toV.set(x, y + (i+1)*distance))) {
                 break;
             }
             if (i == maxLength_flame - 1) isLast = true;
-            explosion.add(new Flame(this, bombAtlas, Flame.Direction.UP, isLast, x, y + i + 1));
+            explosion.add(new Flame(this, bombAtlas, Flame.Direction.UP, isLast, x, y+(i+1)*distance));
         }
         isLast = false;
 
@@ -114,7 +110,7 @@ public class Bomb extends Entity {
                 break;
             }
             if (i == maxLength_flame - 1) isLast = true;
-            explosion.add(new Flame(this, bombAtlas, Flame.Direction.DOWN, isLast, x, y - i - 1));
+            explosion.add(new Flame(this, bombAtlas, Flame.Direction.DOWN, isLast, x, y - (i + 1)*distance));
         }
         isLast = false;
 
@@ -124,7 +120,7 @@ public class Bomb extends Entity {
                 break;
             }
             if (i == maxLength_flame - 1) isLast = true;
-            explosion.add(new Flame(this, bombAtlas, Flame.Direction.LEFT, isLast, x - i - 1, y));
+            explosion.add(new Flame(this, bombAtlas, Flame.Direction.LEFT, isLast, x - (i + 1)*distance, y));
         }
         isLast = false;
 
@@ -134,7 +130,7 @@ public class Bomb extends Entity {
                 break;
             }
             if (i == maxLength_flame - 1) isLast = true;
-            explosion.add(new Flame(this, bombAtlas, Flame.Direction.RIGHT, isLast, x + i + 1, y));
+            explosion.add(new Flame(this, bombAtlas, Flame.Direction.RIGHT, isLast, x + (i + 1)*distance, y));
         }
     }
 

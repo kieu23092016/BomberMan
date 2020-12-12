@@ -8,13 +8,15 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
 
-import static uet.oop.game.Manager.GameManager.PPM;
+import static uet.oop.game.Manager.GameManager.*;
 
 
 public class Flame extends Entity {
 
-    public static final float WIDTH_FLAME = 32;
-    public static final float HEIGHT_FLAME = 32;
+    public static final float WIDTH_FLAME = 40;
+    public static final float HEIGHT_FLAME = 40;
+
+    public static short defaultMaskBits = BOMBER_BIT | BRICK_BIT | STONE_BIT | BOSS1_BIT;
 
 
     public enum Direction {CENTER, LEFT, RIGHT, UP, DOWN};
@@ -24,9 +26,13 @@ public class Flame extends Entity {
     public Animation flameAnimation;
     public float stateTimer;
 
-
-
-    public Flame(Bomb bomb, TextureAtlas textureAtlas,Direction direction, boolean isLastFrame, float x, float y) {
+    /**
+     * constructor of flame.
+     * @param isLastFrame ktra co phai flame cuoi cung khong(do flame cuoi khac voi flame con lai)
+     * @param posX vi tri flame
+     * @param posY vi tri flame
+     */
+    public Flame(Bomb bomb, TextureAtlas textureAtlas,Direction direction, boolean isLastFrame, float posX, float posY) {
         this.gameWorld = bomb.gameWorld;
         this.direction = direction;
         this.isLastFrame = isLastFrame;
@@ -34,7 +40,7 @@ public class Flame extends Entity {
 
         createAnimation(textureAtlas);
 
-        defineCharacter(bomb, x, y);
+        defineCharacter(bomb, posX, posY);
         setBounds(getX(), getY(), WIDTH_FLAME/PPM, HEIGHT_FLAME/PPM);
         setPosition(getPosAnimationX(), getPosAnimationY());
     }
@@ -89,20 +95,20 @@ public class Flame extends Entity {
         }
     }
 
-    public void defineCharacter(Bomb bomb, float x, float y) {
+    public void defineCharacter(Bomb bomb, float posX, float posY) {
         BodyDef bodyDef = new BodyDef();
-        bodyDef.type = BodyDef.BodyType.DynamicBody;
-        bodyDef.position.set(x, y);
+        bodyDef.type = BodyDef.BodyType.KinematicBody;
+        bodyDef.position.set(posX, posY);
         body = gameWorld.createBody(bodyDef);
 
         PolygonShape polygonShape = new PolygonShape();
-        polygonShape.setAsBox(20/PPM, 20/PPM);
+        polygonShape.setAsBox(0.2f, 0.2f);
         FixtureDef fixtureDef = new FixtureDef();
 
         fixtureDef.shape = polygonShape;
-        /*fixtureDef.filter.categoryBits = GameManager.EXPLOSION_BIT;
-        fixtureDef.filter.maskBits = Explosion.defaultMaskBits;
-        fixtureDef.isSensor = true;*/
+        fixtureDef.filter.categoryBits = FLAME_BIT;
+        fixtureDef.filter.maskBits = defaultMaskBits;
+        fixtureDef.isSensor = true;
         body.createFixture(fixtureDef);
 
     }

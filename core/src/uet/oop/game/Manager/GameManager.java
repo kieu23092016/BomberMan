@@ -24,6 +24,7 @@ public class GameManager {
     public static final short STONE_BIT = 6;
     public static final short DESTROY_BIT = 8;
     public static final short BOSS1_BIT = 10;
+    public static final short FLAME_BIT = 12;
 
 
 }
