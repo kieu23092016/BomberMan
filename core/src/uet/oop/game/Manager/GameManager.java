@@ -8,7 +8,7 @@ public class GameManager {
     public static final float V_WIDTH = 765;
     public static final float V_HEIGHT = 675;
 
-    public static final String MAP_FILES = "map/map2.tmx";
+    public static final String MAP_FILES = "map/mapfinal.tmx";
     public static final String BOMBER_ATLAS = "sprite/spriteWhite.txt";
     public static final String BOSS1_ATLAS = "sprite/boss1.txt";
     public static final String BOMB_ATLAS = "img/actors.txt";

@@ -16,13 +16,12 @@ public class Bomber extends Entity {
     public static final int BOMBER_WIDTH = 45;
     public static final int BOMBER_HEIGHT = 56;
 
-   // public static short bomberMaskBit = BRICK_BIT | STONE_BIT | BOSS1_BIT | FLAME_BIT;
+    // public static short bomberMaskBit = BRICK_BIT | STONE_BIT | BOSS1_BIT | FLAME_BIT;
 
     public float SPEED = 1f;
 
 
     private List<Bomb> bombList = new ArrayList<Bomb>();
-
 
 
     public enum State {DEAD, UP, DOWN, LEFT, RIGHT}
@@ -40,9 +39,9 @@ public class Bomber extends Entity {
     public Bomber(PlayScreen playScreen, TextureAtlas textureAtlas) {
         super(textureAtlas.findRegion("bebong_down"));
         this.gameWorld = playScreen.getGameWorld();
-        /*currentState = State.LEFT;
-        previousState = State.LEFT;
-        stateTimer = 0;
+        currentState = State.LEFT;
+        //previousState = State.LEFT;
+        /*stateTimer = 0;
         runningRight = true;*/
 
         /*Array<TextureRegion> frames = new Array<TextureRegion>();
@@ -80,15 +79,44 @@ public class Bomber extends Entity {
     }
 
     public TextureRegion getFrame(float dt) {
+        currentState = getState();
         TextureRegion region;
-        if (body.getLinearVelocity().y > 0)
+
+        switch (currentState) {
+            case RIGHT:
+                region = bomberRight;
+                break;
+            case LEFT:
+                region = bomberLeft;
+                break;
+            case DOWN:
+                region = bomberDown;
+                break;
+            case UP:
+            default:
+                region = bomberUp;
+                break;
+        }
+        /*if (body.getLinearVelocity().y > 0 )
             region = bomberUp;
         else if (body.getLinearVelocity().y < 0)
             region = bomberDown;
         else if (body.getLinearVelocity().x < 0)
-            region = bomberLeft;
-        else region = bomberRight;
+        else */
+        //previousState = currentState;
         return region;
+    }
+
+    public State getState() {
+        if (body.getLinearVelocity().y > 0 )
+            return State.UP;
+        else if (body.getLinearVelocity().y < 0 )
+            return State.DOWN;
+        else if (body.getLinearVelocity().x < 0 )
+            return State.LEFT;
+        else if (body.getLinearVelocity().x > 0)
+            return State.RIGHT;
+        else return currentState;
     }
 
     public void defineCharacter() {
@@ -102,7 +130,7 @@ public class Bomber extends Entity {
         shape.setRadius(16 / PPM);
 
         fdef.filter.categoryBits = BOMBER_BIT;
-        fdef.filter.maskBits = BRICK_BIT | STONE_BIT |BOMB_BIT | BOSS1_BIT;
+        fdef.filter.maskBits = BRICK_BIT | STONE_BIT | BOMB_BIT | BOSS1_BIT;
         fdef.shape = shape;
         body.createFixture(fdef);
 
@@ -143,7 +171,7 @@ public class Bomber extends Entity {
             for (int i = 0; i < bombList.size(); i++) {
                 bombList.get(i).draw(batch);
                 bombList.get(i).update(dt);
-               // System.out.println("BOMB" + " " + i + " : timeToExplode is: " + bombList.get(i).timeToExplode);
+                // System.out.println("BOMB" + " " + i + " : timeToExplode is: " + bombList.get(i).timeToExplode);
 
                 if (bombList.get(i).timeExploding == 0) {
                     bombList.get(i).dispose();
@@ -161,6 +189,7 @@ public class Bomber extends Entity {
     public void onHeadHit() {
 
     }
+
     @Override
     public void dispose() {
 

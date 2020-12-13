@@ -30,6 +30,7 @@ public class Bomb extends Entity {
 
     public float timeToExplode = 120; //thời gian hẹn để bom nổ
     public float timeExploding = 100; //thời gian nổ
+    public float countDown = timeExploding;
     public boolean canExplodeThrough = false;
 
     public boolean isExploded = false;
@@ -80,7 +81,6 @@ public class Bomb extends Entity {
 
 
         defineCharacter();
-        exploded(getPosAnimationX(), getPosAnimationY());
 
         setBounds(player.getX(), player.getY(), WIDTH / PPM, HEIGHT / PPM);
         setPosition(getPosAnimationX(), getPosAnimationY());
@@ -159,7 +159,8 @@ public class Bomb extends Entity {
         if (timeToExplode > 0)
             timeToExplode--;
         else {
-            state = State.EXPLODED;
+            if (timeExploding == countDown) state = State.EXPLODED;
+            if (timeExploding == countDown-1) state = State.NORMAL;
             if (timeExploding > 0) timeExploding--;
         }
     }
@@ -169,10 +170,15 @@ public class Bomb extends Entity {
         if (timeToExplode>0) {
             batch.draw(normalAnimation.getKeyFrame(stateTimer, true), getPosAnimationX(), getPosAnimationY(), WIDTH / PPM, HEIGHT / PPM);
         }
-        if (timeToExplode==0 && timeExploding>0)
-            for (int i = 0; i<explosion.size(); i++) {
+        if (timeToExplode==0 && timeExploding>0) {
+            if (state == State.EXPLODED) {
+                exploded(getX(), getY());
+            }
+            System.out.println("SIZE OF EXPLOSION LIST IS: " + explosion.size());
+            for (int i = 0; i < explosion.size(); i++) {
                 explosion.get(i).draw(batch);
             }
+        }
         //fdef.filter.categoryBits = DESTROY_BIT;
         //System.out.println(fdef.filter.categoryBits +" mask"+fdef.filter.maskBits);
     }
@@ -188,7 +194,7 @@ public class Bomb extends Entity {
         shape.setRadius(RADIUS_BODY / PPM);
 
         fdef.filter.categoryBits = BOMB_BIT;
-        //fdef.filter.maskBits = BOSS1_BIT|BOMBER_BIT;
+        fdef.filter.maskBits = BOSS1_BIT|BOMBER_BIT;
         fdef.shape = shape;
         body.createFixture(fdef);
     }
@@ -196,7 +202,9 @@ public class Bomb extends Entity {
     @Override
     public void dispose() {
         gameWorld.destroyBody(body);
-        this.body = null;
+        for (int i = 0; i<explosion.size(); i++) {
+            gameWorld.destroyBody(explosion.get(i).body);
+        }
         this.normalAnimation = null;
     }
 }
