@@ -29,18 +29,18 @@ public class Hud {
     Label gameLabel;
 
     public Hud(SpriteBatch spriteBatch) {
-        worldTimer = 300;
+        worldTimer = 1000;
         timeCount = 0;
-        score = 0;
+        score = 3;
         viewport = new FitViewport(V_WIDTH, V_HEIGHT);
         stage = new Stage(viewport, spriteBatch);
 
-        countdownLabel = new Label(String.format("%03d", worldTimer), new Label.LabelStyle(new BitmapFont(), Color.YELLOW));
-        scoreLabel = new Label(String.format("%05d", score), new Label.LabelStyle(new BitmapFont(),Color.YELLOW));
+        countdownLabel = new Label(String.format("%04d", worldTimer), new Label.LabelStyle(new BitmapFont(), Color.YELLOW));
+        scoreLabel = new Label(String.format("%01d", score), new Label.LabelStyle(new BitmapFont(),Color.YELLOW));
         timeLabel = new Label("Time", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
-        levelLabel = new Label("1-1", new Label.LabelStyle(new BitmapFont(), Color.YELLOW));
-        worldLabel = new Label("World", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
-        gameLabel = new Label("BBM", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
+        levelLabel = new Label("1", new Label.LabelStyle(new BitmapFont(), Color.YELLOW));
+        worldLabel = new Label("Level", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
+        gameLabel = new Label("Heart", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
 
         Table table = new Table();
         table.top();
@@ -72,7 +72,7 @@ public class Hud {
     }
     public static void addScore(int value){
         score+= value;
-        scoreLabel.setText(String.format("%06d", score));
+        scoreLabel.setText(String.format("%01d", score));
     }
 
 

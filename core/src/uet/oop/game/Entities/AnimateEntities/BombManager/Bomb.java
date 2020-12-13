@@ -1,6 +1,7 @@
 package uet.oop.game.Entities.AnimateEntities.BombManager;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -8,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
+import uet.oop.game.BombermanGame;
 import uet.oop.game.Entities.AnimateEntities.AnimateEntity;
 import uet.oop.game.Entities.AnimateEntities.Bomber;
 
@@ -158,6 +160,7 @@ public class Bomb extends AnimateEntity {
         if (timeToExplode==0 && timeExploding>0) {
             if (state == State.BEGIN_EXPLODED) {
                 exploded(getX(), getY());
+                BombermanGame.manager.get("audio/sound/bomb_bang.wav", Sound.class).play();
             }
             System.out.println("SIZE OF EXPLOSION LIST IS: " + explosion.size());
             for (int i = 0; i < explosion.size(); i++) {

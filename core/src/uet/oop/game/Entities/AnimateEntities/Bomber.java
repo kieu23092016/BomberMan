@@ -1,7 +1,9 @@
 package uet.oop.game.Entities.AnimateEntities;
 
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.physics.box2d.*;
+import uet.oop.game.BombermanGame;
 import uet.oop.game.Entities.AnimateEntities.BombManager.Bomb;
 import uet.oop.game.Entities.Entity;
 import uet.oop.game.Screens.PlayScreen;
@@ -164,7 +166,7 @@ public class Bomber extends AnimateEntity {
         Bomb bomb = new Bomb(this, bombAndItemAtlas);
         bombList.add(bomb);
         System.out.println("SIZE OF BOMB LIST IS: " + bombList.size());
-
+        BombermanGame.manager.get("audio/sound/newbomb.wav", Sound.class).play();
     }
 
     public void draw(Batch batch, float dt) {
