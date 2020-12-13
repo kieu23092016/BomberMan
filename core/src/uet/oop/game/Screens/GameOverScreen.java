@@ -30,19 +30,17 @@ public class GameOverScreen implements Screen {
         viewport = new FitViewport(Bomber.BOMBER_WIDTH, Bomber.BOMBER_HEIGHT, new OrthographicCamera());
         stage = new Stage(viewport, ((BombermanGame) game).batch);
 
-        Label.LabelStyle font = new Label.LabelStyle(new BitmapFont(), Color.YELLOW);
 
         Table table = new Table();
         table.center();
         table.setFillParent(true);
 
-        Label gameOverLaybel = new Label("GAME OVER", font);
-        Label playAgainLabel = new Label("Click to Play Again", font);
+        Label gameOverLabel = new Label("GAME OVER", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
+        Label playAgainLabel = new Label("Click to Play Again", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
 
-        table.add(gameOverLaybel).expandX();
+        table.add(gameOverLabel).pad(10);
         table.row();
-        table.add(playAgainLabel).expandX().padTop(10f);
-
+        table.add(playAgainLabel).padTop(0);
         stage.addActor(table);
 
     }

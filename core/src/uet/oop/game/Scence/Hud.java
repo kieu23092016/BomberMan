@@ -17,6 +17,7 @@ public class Hud {
     public Stage stage;
     private Viewport viewport;
     private boolean timeUp;
+    private boolean scoreUp;
     private Integer worldTimer;
     private float timeCount;
     private static Integer score;
@@ -71,10 +72,14 @@ public class Hud {
         }
     }
     public static void addScore(int value){
-        score+= value;
+        score -= value;
         scoreLabel.setText(String.format("%01d", score));
     }
-
+    public void checkScore(){
+        if(score == 0){
+            scoreUp = true;
+        }
+    }
 
     public void dispose() {
         stage.dispose();
@@ -82,5 +87,9 @@ public class Hud {
 
     public boolean isTimeUp() {
         return timeUp;
+    }
+
+    public boolean isScoreUp() {
+        return scoreUp;
     }
 }

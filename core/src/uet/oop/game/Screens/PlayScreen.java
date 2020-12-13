@@ -110,10 +110,10 @@ public class PlayScreen implements Screen {
         gameWorld.setContactListener(new WorldContactListener());
 
         //TODO: test flame
-       // bomb = new Bomb(player, bombAtlas);
+        // bomb = new Bomb(player, bombAtlas);
         //flame = new Flame(bomb, bombAtlas, Flame.Direction.CENTER, true, 32/PPM, 32/PPM);
         //TODO: test item
-        liveItem = new FlameItem(this, bombAndItemAtlas, 100/PPM, 100/PPM);
+        liveItem = new FlameItem(this, bombAndItemAtlas, 100 / PPM, 100 / PPM);
 
 
         music = BombermanGame.manager.get("audio/music/playmusic (2).ogg", Music.class);
@@ -158,6 +158,12 @@ public class PlayScreen implements Screen {
         hud.stage.draw();
         //box2DDebugRenderer.setDrawBodies(false);
         box2DDebugRenderer.render(gameWorld, camera.combined);
+
+        if (gameOver()) {
+            game.setScreen(new GameOverScreen(game));
+            BombermanGame.manager.get("audio/music/playmusic (2).ogg", Music.class).stop();
+            dispose();
+        }
     }
 
     public void handleInput(float dt) {
@@ -176,6 +182,7 @@ public class PlayScreen implements Screen {
             player.placeBomb(game.batch);
         }
     }
+
 
     public void update(float dt) {
         handleInput(dt);
@@ -210,6 +217,13 @@ public class PlayScreen implements Screen {
     public void dispose() {
         hud.dispose();
 
+    }
+
+    public boolean gameOver() {
+        if (getHud().isTimeUp() || getHud().isScoreUp()) {
+            return true;
+        }
+        return false;
     }
 
     public Hud getHud() {
