@@ -1,4 +1,4 @@
-package uet.oop.game.Entities;
+package uet.oop.game.Entities.AnimateEntities.Enemies;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -8,8 +8,9 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
+import uet.oop.game.Entities.AnimateEntities.AnimateEntity;
 
-public abstract class Enemy extends Sprite {
+public abstract class Enemy extends AnimateEntity {
     public Body body;
     protected World gameWorld;
     protected TiledMap map;
@@ -30,6 +31,7 @@ public abstract class Enemy extends Sprite {
         defineEnemy();
     }
     public abstract void defineEnemy();
+
     public int getRandomWalkingState() {
         // define the range
         int max = 4;
@@ -89,4 +91,7 @@ public abstract class Enemy extends Sprite {
 //            move = false;
 //        }
     }
+
+
+
 }

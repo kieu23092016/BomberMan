@@ -2,7 +2,6 @@ package uet.oop.game.Manager;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.physics.box2d.*;
-import uet.oop.game.Entities.Enemy;
 import uet.oop.game.Entities.Entity;
 
 import static uet.oop.game.Manager.GameManager.*;

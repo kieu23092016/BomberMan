@@ -1,8 +1,9 @@
-package uet.oop.game.Entities;
+package uet.oop.game.Entities.AnimateEntities;
 
 import com.badlogic.gdx.graphics.g2d.*;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
+import uet.oop.game.Entities.AnimateEntities.BombManager.Bomb;
+import uet.oop.game.Entities.Entity;
 import uet.oop.game.Screens.PlayScreen;
 
 import java.util.ArrayList;
@@ -11,7 +12,7 @@ import java.util.List;
 import static uet.oop.game.Manager.GameManager.*;
 
 
-public class Bomber extends Entity {
+public class Bomber extends AnimateEntity {
 
     public static final int BOMBER_WIDTH = 45;
     public static final int BOMBER_HEIGHT = 56;
@@ -39,7 +40,7 @@ public class Bomber extends Entity {
     public Bomber(PlayScreen playScreen, TextureAtlas textureAtlas) {
         super(textureAtlas.findRegion("bebong_down"));
         this.gameWorld = playScreen.getGameWorld();
-        currentState = State.LEFT;
+        currentState = State.DOWN;
         //previousState = State.LEFT;
         /*stateTimer = 0;
         runningRight = true;*/
@@ -160,7 +161,7 @@ public class Bomber extends Entity {
     }
 
     public void placeBomb(Batch batch) {
-        Bomb bomb = new Bomb(this, bombAtlas);
+        Bomb bomb = new Bomb(this, bombAndItemAtlas);
         bombList.add(bomb);
         System.out.println("SIZE OF BOMB LIST IS: " + bombList.size());
 

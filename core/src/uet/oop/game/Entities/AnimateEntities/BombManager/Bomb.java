@@ -1,21 +1,22 @@
-package uet.oop.game.Entities;
+package uet.oop.game.Entities.AnimateEntities.BombManager;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
+import uet.oop.game.Entities.AnimateEntities.AnimateEntity;
+import uet.oop.game.Entities.AnimateEntities.Bomber;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static uet.oop.game.Manager.GameManager.*;
 
-public class Bomb extends Entity {
+public class Bomb extends AnimateEntity {
 
     public Bomber player;
     public List<Flame> explosion = new ArrayList<Flame>();
@@ -25,7 +26,7 @@ public class Bomb extends Entity {
     public static final float HEIGHT = 32;
     public static final float RADIUS_BODY = 10;
 
-    public enum State {NORMAL, EXPLODED}
+    public enum State {NORMAL, BEGIN_EXPLODED}
     public State state;
 
     public float timeToExplode = 120; //thời gian hẹn để bom nổ
@@ -134,22 +135,6 @@ public class Bomb extends Entity {
         }
     }
 
-    public TextureRegion getFrame(float dt) {
-        //stateTimer += Gdx.graphics.getDeltaTime();
-        TextureRegion textureRegion = null;
-        switch (state) {
-            case EXPLODED:
-                //
-                break;
-            case NORMAL:
-            default:
-                textureRegion = normalAnimation.getKeyFrame(stateTimer, true);
-                break;
-
-        }
-        return textureRegion;
-    }
-
     @Override
     public void onHeadHit() {
 
@@ -159,7 +144,7 @@ public class Bomb extends Entity {
         if (timeToExplode > 0)
             timeToExplode--;
         else {
-            if (timeExploding == countDown) state = State.EXPLODED;
+            if (timeExploding == countDown) state = State.BEGIN_EXPLODED;
             if (timeExploding == countDown-1) state = State.NORMAL;
             if (timeExploding > 0) timeExploding--;
         }
@@ -171,7 +156,7 @@ public class Bomb extends Entity {
             batch.draw(normalAnimation.getKeyFrame(stateTimer, true), getPosAnimationX(), getPosAnimationY(), WIDTH / PPM, HEIGHT / PPM);
         }
         if (timeToExplode==0 && timeExploding>0) {
-            if (state == State.EXPLODED) {
+            if (state == State.BEGIN_EXPLODED) {
                 exploded(getX(), getY());
             }
             System.out.println("SIZE OF EXPLOSION LIST IS: " + explosion.size());

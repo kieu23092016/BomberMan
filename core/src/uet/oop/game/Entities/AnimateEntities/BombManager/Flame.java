@@ -1,4 +1,4 @@
-package uet.oop.game.Entities;
+package uet.oop.game.Entities.AnimateEntities.BombManager;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Animation;
@@ -7,11 +7,14 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
+import uet.oop.game.Entities.AnimateEntities.AnimateEntity;
+import uet.oop.game.Entities.AnimateEntities.BombManager.Bomb;
+import uet.oop.game.Entities.Entity;
 
 import static uet.oop.game.Manager.GameManager.*;
 
 
-public class Flame extends Entity {
+public class Flame extends AnimateEntity {
 
     public static final float WIDTH_FLAME = 45;
     public static final float HEIGHT_FLAME = 45;
@@ -32,7 +35,7 @@ public class Flame extends Entity {
      * @param posX vi tri flame
      * @param posY vi tri flame
      */
-    public Flame(Bomb bomb, TextureAtlas textureAtlas,Direction direction, boolean isLastFrame, float posX, float posY) {
+    public Flame(Bomb bomb, TextureAtlas textureAtlas, Direction direction, boolean isLastFrame, float posX, float posY) {
         this.gameWorld = bomb.gameWorld;
         this.direction = direction;
         this.isLastFrame = isLastFrame;

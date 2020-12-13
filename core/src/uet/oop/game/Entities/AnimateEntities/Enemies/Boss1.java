@@ -1,15 +1,12 @@
-package uet.oop.game.Entities;
+package uet.oop.game.Entities.AnimateEntities.Enemies;
 
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.tiled.TiledMap;
-import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
-
-import java.util.Stack;
+import uet.oop.game.Entities.AnimateEntities.Enemies.Enemy;
 
 import static uet.oop.game.Manager.GameManager.*;
 
@@ -87,4 +84,13 @@ public class Boss1 extends Enemy {
         //getRandomWalkingState();
     }
 
+    @Override
+    public void onHeadHit() {
+
+    }
+
+    @Override
+    public void dispose() {
+
+    }
 }

@@ -11,12 +11,12 @@ public class GameManager {
     public static final String MAP_FILES = "map/mapfinal.tmx";
     public static final String BOMBER_ATLAS = "sprite/spriteWhite.txt";
     public static final String BOSS1_ATLAS = "sprite/boss1.txt";
-    public static final String BOMB_ATLAS = "img/actors.txt";
+    public static final String BOMB_AND_ITEMS_ATLAS = "img/actors.txt";
     public static final String BOSSMINI_ATLAS = "sprite/bossMini.txt";
 
 
 
-    public static final TextureAtlas bombAtlas = new TextureAtlas(Gdx.files.internal(BOMB_ATLAS));
+    public static final TextureAtlas bombAndItemAtlas = new TextureAtlas(Gdx.files.internal(BOMB_AND_ITEMS_ATLAS));
     public static final TextureAtlas boss1Atlas = new TextureAtlas(Gdx.files.internal(BOSS1_ATLAS));
     public static final TextureAtlas playerAtlas = new TextureAtlas(Gdx.files.internal(BOMBER_ATLAS));
     public static final TextureAtlas bossMiniAtlas = new TextureAtlas(Gdx.files.internal(BOSSMINI_ATLAS));

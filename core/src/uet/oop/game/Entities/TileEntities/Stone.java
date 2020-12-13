@@ -1,14 +1,15 @@
-package uet.oop.game.Entities;
+package uet.oop.game.Entities.TileEntities;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.physics.box2d.World;
+import uet.oop.game.Entities.Entity;
 
 import static uet.oop.game.Manager.GameManager.STONE_BIT;
 
 
-public class Stone extends Entity {
+public class Stone extends TileEntity {
 
     public Stone(World world, TiledMap map, Rectangle rectangle) {
         super(world, map, rectangle);

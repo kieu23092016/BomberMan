@@ -1,6 +1,5 @@
-package uet.oop.game.Entities;
+package uet.oop.game.Entities.AnimateEntities.Enemies;
 
-import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.tiled.TiledMap;
@@ -8,12 +7,12 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
-import com.badlogic.gdx.utils.Array;
+import uet.oop.game.Entities.AnimateEntities.Enemies.Enemy;
 
 import static uet.oop.game.Manager.GameManager.*;
 import static uet.oop.game.Manager.GameManager.BOMBER_BIT;
 
-public class Ghost extends Enemy{
+public class Ghost extends Enemy {
     public Ghost(World gameWorld, TiledMap map, TextureAtlas textureAtlas) {
         super(gameWorld, map);
         this.textureAtlas = textureAtlas;
@@ -54,5 +53,15 @@ public class Ghost extends Enemy{
         }
         setState();
         //getRandomWalkingState();
+    }
+
+    @Override
+    public void onHeadHit() {
+
+    }
+
+    @Override
+    public void dispose() {
+
     }
 }

@@ -4,7 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Animation;
@@ -19,7 +18,14 @@ import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import uet.oop.game.BombermanGame;
-import uet.oop.game.Entities.*;
+import uet.oop.game.Entities.AnimateEntities.BombManager.Bomb;
+import uet.oop.game.Entities.AnimateEntities.BombManager.Flame;
+import uet.oop.game.Entities.AnimateEntities.Bomber;
+import uet.oop.game.Entities.AnimateEntities.Enemies.Boss1;
+import uet.oop.game.Entities.AnimateEntities.Enemies.Ghost;
+import uet.oop.game.Entities.Items.*;
+import uet.oop.game.Entities.TileEntities.Brick;
+import uet.oop.game.Entities.TileEntities.Stone;
 import uet.oop.game.Manager.WorldContactListener;
 import uet.oop.game.Scence.Hud;
 
@@ -29,8 +35,11 @@ import static uet.oop.game.Manager.GameManager.PPM;
 public class PlayScreen implements Screen {
 
     //TODO: test flame
-    private Flame flame;
-    private Bomb bomb;
+    /*private Flame flame;
+    private Bomb bomb;*/
+
+    //TODO: test item
+    private Item liveItem;
 
     private BombermanGame game;
 
@@ -64,7 +73,7 @@ public class PlayScreen implements Screen {
         viewport = new FitViewport(V_WIDTH / PPM, V_HEIGHT / PPM, camera);
         camera.position.set(viewport.getWorldWidth() / 2, viewport.getWorldHeight() / 2, 0);
 
-        animation = new Animation(1 / 5f, bombAtlas.getRegions());
+        animation = new Animation(1 / 5f, bombAndItemAtlas.getRegions());
 
         map = new TmxMapLoader().load(MAP_FILES);
         renderer = new OrthogonalTiledMapRenderer(map, 1 / PPM);
@@ -92,6 +101,7 @@ public class PlayScreen implements Screen {
             Rectangle rectangle = ((RectangleMapObject) object).getRectangle();
             new Brick(gameWorld, map, rectangle);
         }
+
         player = new Bomber(this, playerAtlas);
         boss1 = new Boss1(gameWorld, map, boss1Atlas);
         ghost1 = new Ghost(gameWorld, map, bossMiniAtlas);
@@ -102,6 +112,9 @@ public class PlayScreen implements Screen {
         //TODO: test flame
        // bomb = new Bomb(player, bombAtlas);
         //flame = new Flame(bomb, bombAtlas, Flame.Direction.CENTER, true, 32/PPM, 32/PPM);
+        //TODO: test item
+        liveItem = new FlameItem(this, bombAndItemAtlas, 100/PPM, 100/PPM);
+
 
         music = BombermanGame.manager.get("audio/music/playmusic (2).ogg", Music.class);
         music.setLooping(true);
@@ -134,6 +147,8 @@ public class PlayScreen implements Screen {
         //TODO: test flame
         //bomb.draw(game.batch);
         //flame.draw(game.batch);
+        //TODO: test live item
+        liveItem.draw(game.batch);
 
         elapsedTime += Gdx.graphics.getDeltaTime();
         //game.batch.draw((TextureRegion) animation.getKeyFrame(elapsedTime, true), 10 / PPM, 20 / PPM, 45 / PPM, 45 / PPM);
