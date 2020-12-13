@@ -71,7 +71,7 @@ public class Hud {
         }
     }
     public static void addScore(int value){
-         score+= value;
+        score+= value;
         scoreLabel.setText(String.format("%06d", score));
     }
 

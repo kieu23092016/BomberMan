@@ -1,14 +1,12 @@
 package uet.oop.game.Entities;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
-import uet.oop.game.BombermanGame;
 
 import static uet.oop.game.Manager.GameManager.*;
 
@@ -108,9 +106,9 @@ public class Flame extends Entity {
         FixtureDef fixtureDef = new FixtureDef();
 
         fixtureDef.shape = polygonShape;
-        //fixtureDef.filter.categoryBits = FLAME_BIT;
-        //fixtureDef.filter.maskBits = defaultMaskBits;
-        //fixtureDef.isSensor = true;
+        fixtureDef.filter.categoryBits = FLAME_BIT;
+        //fixtureDef.filter.maskBits = BOMBER_BIT | BRICK_BIT | STONE_BIT | BOSS1_BIT;;
+        fixtureDef.isSensor = true;
         body.createFixture(fixtureDef);
 
     }
@@ -123,11 +121,11 @@ public class Flame extends Entity {
 
     @Override
     public void onHeadHit() {
-        BombermanGame.manager.get("audio/sound/bomb_bang.wav", Sound.class).play();
+
     }
 
     @Override
     public void dispose() {
-
+        gameWorld.destroyBody(body);
     }
 }

@@ -8,8 +8,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import uet.oop.game.Screens.PlayScreen;
 
 public class BombermanGame extends Game {
-      public SpriteBatch batch;
-      public static AssetManager manager;
+    public SpriteBatch batch;
+    public static AssetManager manager;
 
     @Override
     public void create() {

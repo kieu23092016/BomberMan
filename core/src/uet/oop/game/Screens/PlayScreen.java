@@ -44,10 +44,12 @@ public class PlayScreen implements Screen {
 
     private Bomber player;
     private Boss1 boss1;
+    private Ghost ghost1;
     private float dt = 1 / 5f;
-    private Hud hud;
+
     private Animation animation;
     private Music music;
+    private Hud hud;
     public float elapsedTime = 0;
 
     public World getGameWorld() {
@@ -58,7 +60,6 @@ public class PlayScreen implements Screen {
 
         this.game = bombermanGame;
         hud = new Hud(game.batch);
-
         camera = new OrthographicCamera(V_WIDTH / PPM, V_HEIGHT / PPM);
         viewport = new FitViewport(V_WIDTH / PPM, V_HEIGHT / PPM, camera);
         camera.position.set(viewport.getWorldWidth() / 2, viewport.getWorldHeight() / 2, 0);
@@ -93,17 +94,14 @@ public class PlayScreen implements Screen {
         }
         player = new Bomber(this, playerAtlas);
         boss1 = new Boss1(gameWorld, map, boss1Atlas);
+        ghost1 = new Ghost(gameWorld, map, bossMiniAtlas);
+
         animation = boss1.animation;
         gameWorld.setContactListener(new WorldContactListener());
 
         //TODO: test flame
-<<<<<<< HEAD
-        bomb = new Bomb(player, bombAtlas);
-        flame = new Flame(bomb, bombAtlas, Flame.Direction.CENTER, true, 32 / PPM, 32 / PPM);
-=======
        // bomb = new Bomb(player, bombAtlas);
         //flame = new Flame(bomb, bombAtlas, Flame.Direction.CENTER, true, 32/PPM, 32/PPM);
->>>>>>> 455e2a3e57ffe76c2f156f712b96968ea4378fd4
 
         music = BombermanGame.manager.get("audio/music/playmusic (2).ogg", Music.class);
         music.setLooping(true);
@@ -130,6 +128,8 @@ public class PlayScreen implements Screen {
         player.draw(game.batch, dt);
 
         boss1.draw(game.batch);
+        ghost1.draw(game.batch);
+
 
         //TODO: test flame
         //bomb.draw(game.batch);
@@ -165,9 +165,10 @@ public class PlayScreen implements Screen {
     public void update(float dt) {
         handleInput(dt);
         gameWorld.step(1 / 60f, 6, 2);
-        player.update(dt);
         hud.update(dt);
+        player.update(dt);
         boss1.update(dt);
+        ghost1.update(dt);
     }
 
     @Override

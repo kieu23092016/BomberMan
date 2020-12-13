@@ -13,21 +13,14 @@ public class WorldContactListener implements ContactListener {
     public void beginContact(Contact contact) {
         Fixture fixture1 = contact.getFixtureA();
         Fixture fixture2 = contact.getFixtureB();
-        /*if (fixture1.getUserData() == "head" || fixture2.getUserData() == "head") {
-            Fixture head = fixture1.getUserData() == "head" ? fixture1 : fixture2;
-            Fixture object = head == fixture1 ? fixture2 : fixture1;
-            if (object.getUserData() != null && Entity.class.isAssignableFrom(object.getUserData().getClass())) {
-                ((Entity) object.getUserData()).onHeadHit();
-            }
-        }
-        int cDef = fixture1.getFilterData().categoryBits | fixture2.getFilterData().categoryBits;
 
+        int cDef = fixture1.getFilterData().categoryBits | fixture2.getFilterData().categoryBits;
         switch (cDef) {
-            case BOMBER_BIT | BRICK_BIT:
+            case BOMBER_BIT | FLAME_BIT:
                 if (fixture1.getFilterData().categoryBits == BOMBER_BIT)
                 {
                     ((Entity) fixture2.getUserData()).onHeadHit();
-                    Gdx.app.log("COLLIDE","bOMBER");
+                    //Gdx.app.log("COLLIDE","bOMBER");
                 }
                 else
                 {
@@ -36,29 +29,61 @@ public class WorldContactListener implements ContactListener {
 
                 }
                 break;
-//            case BOSS1_BIT | (STONE_BIT|BRICK_BIT):
-//                if (fixture1.getFilterData().categoryBits == BOSS1_BIT)
-//                {
-//                    ((Enemy) fixture1.getUserData()).reversePath(true, false);
-//                    Gdx.app.log("COLLIDE","ENEMY");
-//                }
-//                else if (fixture2.getFilterData().categoryBits == BOSS1_BIT)
-//                {
-//                    //((Enemy) fixture2.getUserData()).reversePath(true, false);
-//                    Gdx.app.log("COLLIDE","ENEMY2");
-//                }
-//                break;
-        }*/
+        }
     }
 
     @Override
     public void endContact(Contact contact) {
-        Gdx.app.log("end contact", "end");
+        //Gdx.app.log("end contact", "end");
     }
 
     @Override
     public void preSolve(Contact contact, Manifold oldManifold) {
+        Fixture fixtureA = contact.getFixtureA();
+        Fixture fixtureB = contact.getFixtureB();
 
+        float platform_y;
+        float player_y;
+
+        if(fixtureA.getFilterData().categoryBits ==BOMBER_BIT
+                && fixtureB.getFilterData().categoryBits == BOMB_BIT ||
+                fixtureA.getFilterData().categoryBits == BOMBER_BIT
+                        && fixtureB.getFilterData().categoryBits == BOMB_BIT ) {
+
+            //Gdx.app.log("Player Y ", "" + player_y);
+
+            platform_y = fixtureA.getBody().getPosition().y;
+            player_y = fixtureB.getBody().getPosition().y;
+
+            float platform_x = fixtureA.getBody().getPosition().x;
+            float player_x = fixtureB.getBody().getPosition().x;
+
+            System.out.println(fixtureA.getShape().getRadius() + " r "+fixtureB.getShape().getRadius());
+            double DIS = fixtureA.getShape().getRadius() + fixtureB.getShape().getRadius();
+            System.out.println(fixtureA.getShape().getRadius() + " r "+fixtureB.getShape().getRadius()+" DIS"+DIS);
+
+            if (fixtureA.getFilterData().categoryBits == BOMB_BIT) {
+                platform_y = fixtureA.getBody().getPosition().y;
+                platform_x = fixtureA.getBody().getPosition().x;
+                player_y = fixtureB.getBody().getPosition().y;
+                player_x = fixtureB.getBody().getPosition().x;
+            } else if (fixtureA.getFilterData().categoryBits == BOMBER_BIT) {
+                player_y = fixtureA.getBody().getPosition().y;
+                platform_y = fixtureB.getBody().getPosition().y;
+                platform_x = fixtureB.getBody().getPosition().x;
+                player_x = fixtureA.getBody().getPosition().x;
+            }
+            double distance = Math.sqrt((platform_x-player_x)*(platform_x-player_x)
+                    + (platform_y-player_y)*(platform_y-player_y)) ;
+            System.out.println(distance+"dis");
+            if (distance == 0.0) {  //the player is below platform
+                contact.setEnabled(false);
+            } else {
+                contact.setEnabled(true);
+                System.out.println("collide"+distance);
+
+            }
+        }
     }
 
     @Override

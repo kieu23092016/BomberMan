@@ -143,13 +143,13 @@ public class Bomber extends Entity {
             for (int i = 0; i < bombList.size(); i++) {
                 bombList.get(i).draw(batch);
                 bombList.get(i).update(dt);
-                System.out.println("BOMB" + " " + i + " : timeToExplode is: " + bombList.get(i).timeToExplode);
+               // System.out.println("BOMB" + " " + i + " : timeToExplode is: " + bombList.get(i).timeToExplode);
 
                 if (bombList.get(i).timeExploding == 0) {
                     bombList.get(i).dispose();
                     bombList.remove(i);
                 }
-                System.out.println("SIZE OF BOMB LIST IS: " + bombList.size());
+                //System.out.println("SIZE OF BOMB LIST IS: " + bombList.size());
             }
         }
 

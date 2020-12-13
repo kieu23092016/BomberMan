@@ -1,7 +1,6 @@
 package uet.oop.game.Entities;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -10,7 +9,6 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
-import uet.oop.game.BombermanGame;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,14 +19,13 @@ public class Bomb extends Entity {
 
     public Bomber player;
     public List<Flame> explosion = new ArrayList<Flame>();
-    public int maxLength_flame = 1;
+    public int maxLength_flame=1;
 
     public static final float WIDTH = 32;
     public static final float HEIGHT = 32;
     public static final float RADIUS_BODY = 10;
 
     public enum State {NORMAL, EXPLODED}
-
     public State state;
 
     public float timeToExplode = 120; //thời gian hẹn để bom nổ
@@ -43,7 +40,7 @@ public class Bomb extends Entity {
 
     Vector2 fromV = new Vector2();
     Vector2 toV = new Vector2();
-
+    FixtureDef fdef;
     private boolean checkCanExplodeThrough(Vector2 fromV, Vector2 toV) {
         canExplodeThrough = true;
         System.out.println(fromV.x + " x1"+fromV.y+"y1"+toV.x+"x2"+toV.y+"y2");
@@ -99,15 +96,11 @@ public class Bomb extends Entity {
 
         // up
         for (int i = 0; i < maxLength_flame; i++) {
-<<<<<<< HEAD
-            if (!checkCanExplodeThrough(fromV.set(x, y + i), toV.set(x, y + (i + 1) * distance))) {
-=======
             if (!checkCanExplodeThrough(fromV.set(x, y + distance*i), toV.set(x, y + (i+1)*distance))) {
->>>>>>> 455e2a3e57ffe76c2f156f712b96968ea4378fd4
                 break;
             }
             if (i == maxLength_flame - 1) isLast = true;
-            explosion.add(new Flame(this, bombAtlas, Flame.Direction.UP, isLast, x, y + (i + 1) * distance));
+            explosion.add(new Flame(this, bombAtlas, Flame.Direction.UP, isLast, x, y+(i+1)*distance));
         }
         isLast = false;
 
@@ -117,7 +110,7 @@ public class Bomb extends Entity {
                 break;
             }
             if (i == maxLength_flame - 1) isLast = true;
-            explosion.add(new Flame(this, bombAtlas, Flame.Direction.DOWN, isLast, x, y - (i + 1) * distance));
+            explosion.add(new Flame(this, bombAtlas, Flame.Direction.DOWN, isLast, x, y - (i + 1)*distance));
         }
         isLast = false;
 
@@ -127,7 +120,7 @@ public class Bomb extends Entity {
                 break;
             }
             if (i == maxLength_flame - 1) isLast = true;
-            explosion.add(new Flame(this, bombAtlas, Flame.Direction.LEFT, isLast, x - (i + 1) * distance, y));
+            explosion.add(new Flame(this, bombAtlas, Flame.Direction.LEFT, isLast, x - (i + 1)*distance, y));
         }
         isLast = false;
 
@@ -137,7 +130,7 @@ public class Bomb extends Entity {
                 break;
             }
             if (i == maxLength_flame - 1) isLast = true;
-            explosion.add(new Flame(this, bombAtlas, Flame.Direction.RIGHT, isLast, x + (i + 1) * distance, y));
+            explosion.add(new Flame(this, bombAtlas, Flame.Direction.RIGHT, isLast, x + (i + 1)*distance, y));
         }
     }
 
@@ -159,6 +152,7 @@ public class Bomb extends Entity {
 
     @Override
     public void onHeadHit() {
+
     }
 
     public void update(float dt) {
@@ -172,13 +166,15 @@ public class Bomb extends Entity {
 
     public void draw(Batch batch) {
         stateTimer += Gdx.graphics.getDeltaTime();
-        if (timeToExplode > 0) {
+        if (timeToExplode>0) {
             batch.draw(normalAnimation.getKeyFrame(stateTimer, true), getPosAnimationX(), getPosAnimationY(), WIDTH / PPM, HEIGHT / PPM);
         }
-        if (timeToExplode == 0 && timeExploding > 0)
-            for (int i = 0; i < explosion.size(); i++) {
+        if (timeToExplode==0 && timeExploding>0)
+            for (int i = 0; i<explosion.size(); i++) {
                 explosion.get(i).draw(batch);
             }
+        //fdef.filter.categoryBits = DESTROY_BIT;
+        //System.out.println(fdef.filter.categoryBits +" mask"+fdef.filter.maskBits);
     }
 
     public void defineCharacter() {
@@ -187,20 +183,19 @@ public class Bomb extends Entity {
         bodyDef.type = BodyDef.BodyType.KinematicBody;
         body = gameWorld.createBody(bodyDef);
 
-        FixtureDef fdef = new FixtureDef();
+        fdef = new FixtureDef();
         CircleShape shape = new CircleShape();
         shape.setRadius(RADIUS_BODY / PPM);
 
         fdef.filter.categoryBits = BOMB_BIT;
-        fdef.filter.maskBits = BOSS1_BIT;
+        //fdef.filter.maskBits = BOSS1_BIT|BOMBER_BIT;
         fdef.shape = shape;
         body.createFixture(fdef);
-
-
     }
 
     @Override
     public void dispose() {
+        gameWorld.destroyBody(body);
         this.body = null;
         this.normalAnimation = null;
     }

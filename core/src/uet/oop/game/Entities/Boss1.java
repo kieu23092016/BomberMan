@@ -15,31 +15,6 @@ import static uet.oop.game.Manager.GameManager.*;
 
 public class Boss1 extends Enemy {
     public Animation animation;
-    private TextureAtlas textureAtlas;
-    private TextureRegion bossUp;
-    private TextureRegion bossDown;
-    private TextureRegion bossRight;
-    private TextureRegion bossLeft;
-    private TextureRegion region;
-    private boolean runRight = false;
-    private boolean runUp = false;
-    private boolean runLeft = false;
-    private boolean runDown = false;
-
-
-    public enum State {
-        WALKING_UP,
-        WALKING_DOWN,
-        WALKING_LEFT,
-        WALKING_RIGHT,
-        ATTACKING_UP,
-        ATTACKING_DOWN,
-        ATTACKING_LEFT,
-        ATTACKING_RIGHT,
-        DAMAGED,
-        DYING
-    }
-
     public Boss1(World gameWorld, TiledMap map, TextureAtlas textureAtlas) {
         super(gameWorld, map);
         this.textureAtlas = textureAtlas;
@@ -68,7 +43,7 @@ public class Boss1 extends Enemy {
 
         fixtureDef = new FixtureDef();
         CircleShape shape = new CircleShape();
-        shape.setRadius(22 / PPM);
+        shape.setRadius(21 / PPM);
 
         fixtureDef.filter.categoryBits = BOSS1_BIT;
         fixtureDef.filter.maskBits = BRICK_BIT | BOMB_BIT | STONE_BIT | BOMBER_BIT;
@@ -110,112 +85,6 @@ public class Boss1 extends Enemy {
         }
         setState();
         //getRandomWalkingState();
-        handleBasic();
-    }
-    private boolean move = true;
-    public void setState() {
-        while (!move) {
-            //System.out.println(move);
-            int currentState = getRandomWalkingState();
-            /*switch (currentState) {
-                case 1:
-                    turnUp();
-                case 2:
-                    turnDown();
-
-                case 3:
-                    turnLeft();
-
-                case 4:
-                    turnRight();
-            }*/
-            if(currentState == 1) turnUp();
-            else if(currentState == 2) turnDown();
-            else if(currentState == 3) turnLeft();
-            else turnRight();
-        }
-    }
-    public  void turnUp(){
-        move = true;
-        region=bossUp;
-        body.applyLinearImpulse(new Vector2(0.0f, 0.8f), body.getWorldCenter(), true);;
-        System.out.println("turnUp");
-    }
-    public  void turnDown(){
-        move = true;
-        region=bossDown;
-        body.applyLinearImpulse(new Vector2(0.0f, -0.4f), body.getWorldCenter(), true);;
-        System.out.println("turnDown");
-//        if(body.getLinearVelocity().y==0){
-//            move = false;
-//        }
-    }
-    public  void turnLeft(){
-        body.applyLinearImpulse(new Vector2(-0.4f, 0), body.getWorldCenter(), true);;
-        move = true;
-        region=bossLeft;
-        System.out.println("Left");
-//        if(body.getLinearVelocity().x==0){
-//            move = false;
-//        }
-    }
-    public  void turnRight(){
-        move = true;
-        region=bossRight;
-        // body.setLinearVelocity(0.4f, 0.0f);
-        body.applyLinearImpulse(new Vector2(0.4f, 0), body.getWorldCenter(), true);;
-        System.out.println("Right");
-//        if(body.getLinearVelocity().x==0){
-//            move = false;
-//        }
-    }
-    public void handleBasic() {
-//        if (body.getLinearVelocity().x > 0) {
-//            region = bossRight;
-//            runRight = true;
-//        }
-//        else if (body.getLinearVelocity().x == 0 && runRight == true) {
-//            body.setLinearVelocity(0,-0.4f);
-//            region = bossRight;
-//        }
-        /*else if (body.getLinearVelocity().x == 0 && runRight == false) {
-            body.applyLinearImpulse(new Vector2(0.4f, 0), body.getWorldCenter(), true);
-            region = bossRight;
-        }
-        else if (body.getLinearVelocity().x < 0) {
-            region = bossLeft;
-            runRight = false;
-        }
-        else if (body.getLinearVelocity().y == 0 && runUp == true) {
-            body.applyLinearImpulse(new Vector2(0, 0.4f), body.getWorldCenter(), true);
-            region = bossDown;
-            System.out.println("UP");
-            runUp = false;
-        }
-        else if (body.getLinearVelocity().y == 0 && runUp == false) {
-            body.applyLinearImpulse(new Vector2(0, -0.4f), body.getWorldCenter(), true);
-            region = bossUp;
-            System.out.println("Down");
-            runUp = true;
-        }
-        if ((body.getLinearVelocity().x == 0 && runUp==false && runDown == false) || (body.getLinearVelocity().y == 0 && runRight==false && runLeft==false)) {
-            setState();
-        }*/
     }
 
-    public int getRandomWalkingState() {
-        // define the range
-        int max = 4;
-        int min = 1;
-        int range = max - min + 1;
-        int rand = 0;
-        // generate random numbers within 1 to 10
-        //for (int i = 0; i < 4; i++) {
-        rand = (int) (Math.random() * range) + min;
-        // Output is different everytime this code is executed
-        //System.out.println(rand);
-        // }
-        System.out.println(rand);
-        return rand;
-    }
 }
