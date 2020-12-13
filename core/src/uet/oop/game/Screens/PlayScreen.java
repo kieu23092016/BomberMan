@@ -54,7 +54,7 @@ public class PlayScreen implements Screen {
     private Bomber player;
     private Boss1 boss1;
     private Ghost ghost1;
-    private float dt = 1 / 5f;
+    private float dt = 1 / 60f;
 
     private Animation animation;
     private Music music;

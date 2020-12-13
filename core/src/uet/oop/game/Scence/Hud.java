@@ -29,13 +29,13 @@ public class Hud {
     Label gameLabel;
 
     public Hud(SpriteBatch spriteBatch) {
-        worldTimer = 1000;
+        worldTimer = 150;
         timeCount = 0;
         score = 3;
         viewport = new FitViewport(V_WIDTH, V_HEIGHT);
         stage = new Stage(viewport, spriteBatch);
 
-        countdownLabel = new Label(String.format("%04d", worldTimer), new Label.LabelStyle(new BitmapFont(), Color.YELLOW));
+        countdownLabel = new Label(String.format("%03d", worldTimer), new Label.LabelStyle(new BitmapFont(), Color.YELLOW));
         scoreLabel = new Label(String.format("%01d", score), new Label.LabelStyle(new BitmapFont(),Color.YELLOW));
         timeLabel = new Label("Time", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
         levelLabel = new Label("1", new Label.LabelStyle(new BitmapFont(), Color.YELLOW));
