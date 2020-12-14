@@ -1,11 +1,13 @@
 package uet.oop.game.Manager;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.physics.box2d.*;
 import uet.oop.game.Entities.AnimateEntities.Bomber;
 import uet.oop.game.Entities.AnimateEntities.Enemies.Boss1;
 import uet.oop.game.Entities.AnimateEntities.Enemies.Ghost;
 import uet.oop.game.Entities.Entity;
+import uet.oop.game.Entities.Items.SpeedItem;
 
 import static uet.oop.game.Manager.GameManager.*;
 
@@ -81,6 +83,20 @@ public class WorldContactListener implements ContactListener {
                     Gdx.app.log("boss", "FLAME");
                 }
                 break;
+            case BOMBER_BIT | ITEM_BIT:
+                if (fixture1.getFilterData().categoryBits == ITEM_BIT)
+                {
+                    ((SpeedItem)fixture1.getUserData()).isAppear = false;
+                    ((SpeedItem)fixture1.getUserData()).onHeadHit();
+                    Gdx.app.log("bomber","item");
+                }
+                else
+                {
+                    ((SpeedItem)fixture2.getUserData()).isAppear = false;
+                    ((SpeedItem)fixture2.getUserData()).onHeadHit();
+                    Gdx.app.log("item", "bomber");
+
+                }
         }
 
     }
@@ -130,6 +146,40 @@ public class WorldContactListener implements ContactListener {
                     + (platform_y-player_y)*(platform_y-player_y)) ;
             //System.out.println(distance+"dis");
             if (distance == 0.0) {  //the player is below platform
+                contact.setEnabled(false);
+            } else {
+                contact.setEnabled(true);
+                //System.out.println("collide"+distance);
+
+            }
+        }
+        if(fixtureA.getFilterData().categoryBits ==BOMBER_BIT
+                && fixtureB.getFilterData().categoryBits == ITEM_BIT ||
+                fixtureA.getFilterData().categoryBits == ITEM_BIT
+                        && fixtureB.getFilterData().categoryBits == BOMBER_BIT ) {
+
+            platform_y = fixtureA.getBody().getPosition().y;
+            player_y = fixtureB.getBody().getPosition().y;
+
+            float platform_x = fixtureA.getBody().getPosition().x;
+            float player_x = fixtureB.getBody().getPosition().x;
+
+            if (fixtureA.getFilterData().categoryBits == ITEM_BIT) {
+                platform_y = fixtureA.getBody().getPosition().y;
+                platform_x = fixtureA.getBody().getPosition().x;
+                player_y = fixtureB.getBody().getPosition().y;
+                player_x = fixtureB.getBody().getPosition().x;
+            } else if (fixtureA.getFilterData().categoryBits == BOMBER_BIT) {
+                player_y = fixtureA.getBody().getPosition().y;
+                platform_y = fixtureB.getBody().getPosition().y;
+                platform_x = fixtureB.getBody().getPosition().x;
+                player_x = fixtureA.getBody().getPosition().x;
+            }
+            double DIS = fixtureA.getShape().getRadius() + fixtureB.getShape().getRadius();
+            double distance = Math.sqrt((platform_x-player_x)*(platform_x-player_x)
+                    + (platform_y-player_y)*(platform_y-player_y)) ;
+            //System.out.println(distance+"dis");
+            if (distance != DIS) {  //the player is below platform
                 contact.setEnabled(false);
             } else {
                 contact.setEnabled(true);

@@ -9,19 +9,21 @@ import uet.oop.game.Entities.TileEntities.Brick;
 import uet.oop.game.Entities.Entity;
 import uet.oop.game.Screens.PlayScreen;
 
-import static uet.oop.game.Manager.GameManager.PPM;
+import static uet.oop.game.Manager.GameManager.*;
 
 public abstract class Item extends Entity {
 
     public PlayScreen playScreen;
+    FixtureDef fixtureDef;
     public enum Name {LIVE_ITEM, SPEED_ITEM, FLAME_ITEM, TIME_ITEM}
+
     public Name itemName;
 
     public float ITEM_WIDTH = 40;
     public float ITEM_HEIGHT = 40;
 
     public float timerAppear = 200;
-
+    public boolean isAppear = true;
     protected TextureRegion image;
 
 
@@ -40,11 +42,13 @@ public abstract class Item extends Entity {
         body = gameWorld.createBody(bodyDef);
 
         PolygonShape polygonShape = new PolygonShape();
-        polygonShape.setAsBox(ITEM_WIDTH/2/PPM, ITEM_HEIGHT/2/PPM);
+        polygonShape.setAsBox(ITEM_WIDTH / 2 / PPM, ITEM_HEIGHT / 2 / PPM);
         FixtureDef fixtureDef = new FixtureDef();
 
+        fixtureDef.filter.categoryBits = ITEM_BIT;
+//        fixtureDef.filter.maskBits = BRICK_BIT | BOMB_BIT | STONE_BIT | BOMBER_BIT | FLAME_BIT;
         fixtureDef.shape = polygonShape;
-        body.createFixture(fixtureDef);
+        body.createFixture(fixtureDef).setUserData(this);
 
         //fixtureDef.filter.categoryBits = ;
         //fixtureDef.filter.maskBits = ;
@@ -55,14 +59,20 @@ public abstract class Item extends Entity {
         this.timerAppear = timerAppear;
     }
 
-
     public void update(float dt) {
         if (timerAppear > 0) timerAppear--;
+        else isAppear = false;
     }
 
     public void draw(Batch batch) {
-        if (timerAppear > 0)
+        if (isAppear)
             batch.draw(image, getPosAnimationX(), getPosAnimationY(), ITEM_WIDTH / PPM, ITEM_HEIGHT / PPM);
+    }
+
+    public void onHeadHit() {
+        System.out.println("onheadhit");
+        isAppear = false;
+        //fixtureDef.filter.maskBits = DESTROY_BIT;
     }
 
     @Override

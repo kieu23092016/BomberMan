@@ -57,6 +57,9 @@ public class PlayScreen implements Screen {
     private Bomber player;
     private Boss1 boss1;
     private Ghost ghost1;
+    private Boss1 boss2;
+    private Boss1 boss3;
+    private Boss1 boss4;
 
     public List<Item> itemListGame = new ArrayList<Item>();
     private float dt = 1 / 60f;
@@ -110,7 +113,9 @@ public class PlayScreen implements Screen {
         player = new Bomber(this, playerAtlas);
         boss1 = new Boss1(gameWorld, map, boss1Atlas, 600, 600);
         ghost1 = new Ghost(gameWorld, map, bossMiniAtlas, 500,650);
-
+        boss2 = new Boss1(gameWorld, map, boss1Atlas, 400, 600);
+        boss3 = new Boss1(gameWorld, map, boss1Atlas, 250, 100);
+        boss4 = new Boss1(gameWorld, map, boss1Atlas, 300, 600);
         animation = boss1.animation;
         gameWorld.setContactListener(new WorldContactListener());
 
@@ -147,6 +152,11 @@ public class PlayScreen implements Screen {
 
         boss1.draw(game.batch);
         ghost1.draw(game.batch);
+        boss1.draw(game.batch);
+        boss2.draw(game.batch);
+        boss3.draw(game.batch);
+        boss4.draw(game.batch);
+
 
         //TODO: test item
         for (int i = 0; i<itemListGame.size(); i++) {
@@ -167,14 +177,27 @@ public class PlayScreen implements Screen {
         hud.stage.draw();
         //box2DDebugRenderer.setDrawBodies(false);
         box2DDebugRenderer.render(gameWorld, camera.combined);
+        if (player.HEART < 0)  hud.HEART = 0;
 
-        if (gameOver()) {
+        if(player.HEART ==-10) {
+            gameover=true;
+        }
+        if(!gameover){
+            gameOver();
+        } else {
             game.setScreen(new GameOverScreen(game));
             BombermanGame.manager.get("audio/music/playmusic (2).ogg", Music.class).stop();
             dispose();
         }
     }
-
+    public boolean gameover = false;
+    public boolean gameOver() {
+        if (getHud().isTimeUp() || getHud().isScoreUp()) {
+            gameover = true;
+            return true;
+        }
+        return false;
+    }
     public void handleInput(float dt) {
         if (Gdx.input.isKeyPressed(Input.Keys.RIGHT) && player.body.getLinearVelocity().x <= 2) {
             //player.bomberBody.applyLinearImpulse(new Vector2(0.1f, 0), player.bomberBody.getWorldCenter(), true);
@@ -200,6 +223,10 @@ public class PlayScreen implements Screen {
         player.update(dt);
         boss1.update(dt);
         ghost1.update(dt);
+        if(boss1!=null) boss1.update(dt);
+        if(boss2!=null) boss2.update(dt);
+        if(boss3!=null) boss3.update(dt);
+        if(boss4!=null) boss4.update(dt);
         for (int i = 0; i<itemListGame.size(); i++) {
             itemListGame.get(i).update(dt);
             if (itemListGame.get(i).timerAppear==0) {
@@ -234,13 +261,6 @@ public class PlayScreen implements Screen {
     public void dispose() {
         hud.dispose();
 
-    }
-
-    public boolean gameOver() {
-        if (getHud().isTimeUp() || getHud().isScoreUp()) {
-            return true;
-        }
-        return false;
     }
 
     public Hud getHud() {

@@ -56,7 +56,7 @@ public class Boss1 extends Enemy {
         shape.setRadius(21 / PPM);
 
         fixtureDef.filter.categoryBits = BOSS1_BIT;
-        fixtureDef.filter.maskBits = BRICK_BIT | BOMB_BIT | STONE_BIT | BOMBER_BIT | FLAME_BIT;
+        fixtureDef.filter.maskBits = BRICK_BIT | BOMB_BIT | STONE_BIT | BOMBER_BIT | FLAME_BIT ;
         fixtureDef.shape = shape;
         body.createFixture(fixtureDef).setUserData(this);
         /*fixtureDef.shape = shape;

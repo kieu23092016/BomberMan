@@ -6,7 +6,9 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.viewport.FitViewport;
@@ -19,32 +21,24 @@ import uet.oop.game.Entities.AnimateEntities.Bomber;
 import javax.swing.*;
 import java.awt.*;
 
+import static uet.oop.game.Manager.GameManager.*;
 import static uet.oop.game.Manager.GameManager.PPM;
 
 public class GameOverScreen implements Screen {
-    private Viewport viewport;
-    private Stage stage;
+    public Stage stage;
+    public OrthographicCamera camera;
+    public Viewport viewport;
 
-    private Game game;
+    private BombermanGame game;
+    private TextureRegion imgGameOverScreen;
 
     public GameOverScreen(Game game) {
-        this.game = game;
+        this.game = (BombermanGame) game;
+
         viewport = new FitViewport(Bomber.BOMBER_WIDTH, Bomber.BOMBER_HEIGHT, new OrthographicCamera());
-        stage = new Stage(viewport, ((BombermanGame) game).batch);
-
-
-        Table table = new Table();
-        table.center();
-        table.setFillParent(true);
-
-        Label gameOverLabel = new Label("GAME OVER", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
-        Label playAgainLabel = new Label("Click to Play Again", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
-
-        table.add(gameOverLabel).pad(10/PPM);
-        table.row();
-        table.add(playAgainLabel).padTop(0);
-        stage.addActor(table);
-
+        camera = new OrthographicCamera(V_WIDTH / PPM, V_HEIGHT / PPM);
+        //stage = new Stage(viewport, ((BombermanGame) game).batch);
+        imgGameOverScreen = new TextureRegion(new Texture("map/Images/Images/gameOverScreen.png"),765,674);
     }
 
 
@@ -56,12 +50,20 @@ public class GameOverScreen implements Screen {
     @Override
     public void render(float delta) {
         if(Gdx.input.justTouched()) {
+            System.out.println("touch");
             game.setScreen(new PlayScreen((BombermanGame) game));
-            dispose();
         }
-        Gdx.gl.glClearColor(0, 0, 0, 1);
+        Gdx.gl.glClearColor(0, 0, 0, 0);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        stage.draw();
+        game.batch.begin();
+        if (imgGameOverScreen == null) {
+            System.out.println(1);
+        } else {
+            System.out.println(0);
+            game.batch.draw(imgGameOverScreen,0,0);
+        }
+        game.batch.end();
+        //stage.draw();
     }
 
     @Override
@@ -86,6 +88,6 @@ public class GameOverScreen implements Screen {
 
     @Override
     public void dispose() {
-        stage.dispose();
+
     }
 }

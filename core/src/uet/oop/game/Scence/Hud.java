@@ -8,7 +8,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import uet.oop.game.BombermanGame;
 
 import static uet.oop.game.Manager.GameManager.V_HEIGHT;
 import static uet.oop.game.Manager.GameManager.V_WIDTH;
@@ -20,7 +19,7 @@ public class Hud {
     private boolean scoreUp;
     private Integer worldTimer;
     private float timeCount;
-    private static Integer score;
+    public static Integer HEART;
 
     private static Label scoreLabel;
     Label countdownLabel;
@@ -30,14 +29,14 @@ public class Hud {
     Label gameLabel;
 
     public Hud(SpriteBatch spriteBatch) {
-        worldTimer = 150;
+        worldTimer = 10;
         timeCount = 0;
-        score = 3;
+        HEART = 1;
         viewport = new FitViewport(V_WIDTH, V_HEIGHT);
         stage = new Stage(viewport, spriteBatch);
 
         countdownLabel = new Label(String.format("%03d", worldTimer), new Label.LabelStyle(new BitmapFont(), Color.YELLOW));
-        scoreLabel = new Label(String.format("%01d", score), new Label.LabelStyle(new BitmapFont(),Color.YELLOW));
+        scoreLabel = new Label(String.format("%01d", HEART), new Label.LabelStyle(new BitmapFont(),Color.YELLOW));
         timeLabel = new Label("Time", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
         levelLabel = new Label("1", new Label.LabelStyle(new BitmapFont(), Color.YELLOW));
         worldLabel = new Label("Level", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
@@ -72,11 +71,11 @@ public class Hud {
         }
     }
     public static void addScore(int value){
-        score -= value;
-        scoreLabel.setText(String.format("%01d", score));
+        HEART -= value;
+        scoreLabel.setText(String.format("%01d", HEART));
     }
     public void checkScore(){
-        if(score == 0){
+        if(HEART == 0){
             scoreUp = true;
         }
     }

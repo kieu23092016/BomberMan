@@ -22,7 +22,7 @@ public class Bomber extends AnimateEntity {
     // public static short bomberMaskBit = BRICK_BIT | STONE_BIT | BOSS1_BIT | FLAME_BIT;
 
     public float SPEED = 1f;
-    public int HEART = 3;
+    public int HEART = 1;
     private List<Bomb> bombList = new ArrayList<Bomb>();
 
     public enum State {DEAD, UP, DOWN, LEFT, RIGHT}
@@ -138,7 +138,7 @@ public class Bomber extends AnimateEntity {
         shape.setRadius(16 / PPM);
 
         fdef.filter.categoryBits = BOMBER_BIT;
-        fdef.filter.maskBits = BRICK_BIT | STONE_BIT | BOMB_BIT | BOSS1_BIT | FLAME_BIT;
+        fdef.filter.maskBits = BRICK_BIT | STONE_BIT | BOMB_BIT | BOSS1_BIT | FLAME_BIT | BOSSMINI_BIT | ITEM_BIT;
         fdef.shape = shape;
         body.createFixture(fdef).setUserData(this);
         /*EdgeShape edgeUp = new EdgeShape();
