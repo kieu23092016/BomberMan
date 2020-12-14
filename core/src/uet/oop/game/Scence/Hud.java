@@ -29,7 +29,7 @@ public class Hud {
     Label gameLabel;
 
     public Hud(SpriteBatch spriteBatch) {
-        worldTimer = 10;
+        worldTimer = 150;
         timeCount = 0;
         HEART = 1;
         viewport = new FitViewport(V_WIDTH, V_HEIGHT);

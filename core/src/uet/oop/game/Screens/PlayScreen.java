@@ -175,11 +175,11 @@ public class PlayScreen implements Screen {
         update(dt);
         game.batch.setProjectionMatrix(hud.stage.getCamera().combined);
         hud.stage.draw();
-        //box2DDebugRenderer.setDrawBodies(false);
+        box2DDebugRenderer.setDrawBodies(false);
         box2DDebugRenderer.render(gameWorld, camera.combined);
-        if (player.HEART < 0)  hud.HEART = 0;
+        if (player.HEART < 0)   hud.HEART = 0;
 
-        if(player.HEART ==-10) {
+        if(player.HEART == 0) {
             gameover=true;
         }
         if(!gameover){
