@@ -9,9 +9,11 @@ import static uet.oop.game.Manager.GameManager.PPM;
 public class FlameItem extends Item{
     public FlameItem(PlayScreen playScreen, TextureAtlas itemAtlas, float x, float y) {
         super(playScreen);
+        itemName = Name.FLAME_ITEM;
         image = new TextureRegion(itemAtlas.findRegion("Items"), 16, 0, 16, 16);
 
         defineCharacter(x, y);
+        body.setUserData(this);
         setBounds(getX(), getY(), ITEM_WIDTH / PPM, ITEM_HEIGHT / PPM);
         setPosition(getPosAnimationX(), getPosAnimationY());
     }

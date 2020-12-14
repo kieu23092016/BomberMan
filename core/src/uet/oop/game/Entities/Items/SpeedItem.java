@@ -13,6 +13,7 @@ public class SpeedItem extends Item{
         image = new TextureRegion(itemAtlas.findRegion("Items"), 2 * 16, 0, 16, 16);
 
         defineCharacter(x, y);
+        body.setUserData(this);
         setBounds(getX(), getY(), ITEM_WIDTH / PPM, ITEM_HEIGHT / PPM);
         setPosition(getPosAnimationX(), getPosAnimationY());
     }

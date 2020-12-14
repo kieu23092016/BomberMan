@@ -43,7 +43,7 @@ public abstract class TileEntity extends Entity {
         fixture.setFilterData(filter);
     }
     public TiledMapTileLayer.Cell getCell(int index){
-        TiledMapTileLayer layer = (TiledMapTileLayer)map.getLayers().get(index);
-        return layer.getCell((int) (body.getPosition().x*PPM/32), (int)(body.getPosition().y*PPM/32));
+        TiledMapTileLayer layer = (TiledMapTileLayer) map.getLayers().get(index);
+        return layer.getCell((int) (body.getPosition().x*PPM/45), (int)(body.getPosition().y*PPM/45));
     }
 }

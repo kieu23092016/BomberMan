@@ -13,6 +13,9 @@ import static uet.oop.game.Manager.GameManager.PPM;
 
 public abstract class Item extends Entity {
 
+    public enum Name {LIVE_ITEM, SPEED_ITEM, FLAME_ITEM, TIME_ITEM}
+    public Name itemName;
+
     public float ITEM_WIDTH = 40;
     public float ITEM_HEIGHT = 40;
 

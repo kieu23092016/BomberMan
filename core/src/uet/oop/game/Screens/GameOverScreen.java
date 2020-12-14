@@ -19,6 +19,8 @@ import uet.oop.game.Entities.AnimateEntities.Bomber;
 import javax.swing.*;
 import java.awt.*;
 
+import static uet.oop.game.Manager.GameManager.PPM;
+
 public class GameOverScreen implements Screen {
     private Viewport viewport;
     private Stage stage;
@@ -38,7 +40,7 @@ public class GameOverScreen implements Screen {
         Label gameOverLabel = new Label("GAME OVER", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
         Label playAgainLabel = new Label("Click to Play Again", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
 
-        table.add(gameOverLabel).pad(10);
+        table.add(gameOverLabel).pad(10/PPM);
         table.row();
         table.add(playAgainLabel).padTop(0);
         stage.addActor(table);

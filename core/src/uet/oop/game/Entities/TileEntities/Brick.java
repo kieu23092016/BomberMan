@@ -16,15 +16,26 @@ public class Brick extends BreakableTileEntity {
         fixture.setUserData(this);
         setCategory(BRICK_BIT);
     }
+
+    public void createItem() {
+        /*int random = (int) (Math.random() *(5-1));
+        switch (random){
+            case 1:
+
+        }*/
+    }
+
     @Override
     public void onHeadHit() {
         Gdx.app.log("Brick","Collide");
         //setCategory(DESTROY_BIT);
-        //getCell(1).setTile(null);
     }
 
     @Override
     public void dispose() {
+        if (getCell(5) == null) getCell(6).setTile(null);
+        else getCell(5).setTile(null);
+        gameWorld.destroyBody(body);
 
     }
 }

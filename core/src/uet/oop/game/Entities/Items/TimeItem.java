@@ -15,6 +15,7 @@ public class TimeItem extends Item {
         image = new TextureRegion(itemAtlas.findRegion("Items"), 3 * 16, 16, 16, 16);
 
         defineCharacter(x, y);
+        body.setUserData(this);
         setBounds(getX(), getY(), ITEM_WIDTH / PPM, ITEM_HEIGHT / PPM);
         setPosition(getPosAnimationX(), getPosAnimationY());
     }

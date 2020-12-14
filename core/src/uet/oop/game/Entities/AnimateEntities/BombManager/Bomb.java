@@ -12,6 +12,9 @@ import com.badlogic.gdx.utils.Array;
 import uet.oop.game.BombermanGame;
 import uet.oop.game.Entities.AnimateEntities.AnimateEntity;
 import uet.oop.game.Entities.AnimateEntities.Bomber;
+import uet.oop.game.Entities.Entity;
+import uet.oop.game.Entities.TileEntities.BreakableTileEntity;
+import uet.oop.game.Entities.TileEntities.Brick;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +25,7 @@ public class Bomb extends AnimateEntity {
 
     public Bomber player;
     public List<Flame> explosion = new ArrayList<Flame>();
-    public int maxLength_flame=1;
+    public int maxLength_flame=3;
 
     public static final float WIDTH = 32;
     public static final float HEIGHT = 32;
@@ -32,7 +35,7 @@ public class Bomb extends AnimateEntity {
     public State state;
 
     public float timeToExplode = 120; //thời gian hẹn để bom nổ
-    public float timeExploding = 100; //thời gian nổ
+    public float timeExploding = 40; //thời gian nổ
     public float countDown = timeExploding;
     public boolean canExplodeThrough = false;
 
@@ -58,6 +61,20 @@ public class Bomb extends AnimateEntity {
 
                 if (fixture.getFilterData().categoryBits == BRICK_BIT) {
                     canExplodeThrough = false;
+
+                    //Body body = fixture.getBody();
+                    Brick e =(Brick) fixture.getUserData();
+                    if (e!= null) System.out.println("CHAM BRICK ROI YEAH "+e.getX());
+                    else  System.out.println("NOOOOOOOOOOOOOOOOOOO");
+
+                    e.currentState = BreakableTileEntity.State.BROKEN;
+                    if (Math.random()<0.2){
+
+                    }
+
+                    e.dispose();
+
+                    //gameWorld.destroyBody(fixture.getBody());
 
                     return 0;
                 }

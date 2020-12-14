@@ -14,7 +14,9 @@ public class LiveItem extends Item {
         super(playScreen);
         image = new TextureRegion(itemAtlas.findRegion("Items"), 2 * 16, 16, 16, 16);
 
+        itemName = Name.LIVE_ITEM;
         defineCharacter(x, y);
+        body.setUserData(this);
         setBounds(getX(), getY(), ITEM_WIDTH / PPM, ITEM_HEIGHT / PPM);
         setPosition(getPosAnimationX(), getPosAnimationY());
     }
