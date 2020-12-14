@@ -13,6 +13,7 @@ import uet.oop.game.BombermanGame;
 import uet.oop.game.Entities.AnimateEntities.AnimateEntity;
 import uet.oop.game.Entities.AnimateEntities.Bomber;
 import uet.oop.game.Entities.Entity;
+import uet.oop.game.Entities.Items.SpeedItem;
 import uet.oop.game.Entities.TileEntities.BreakableTileEntity;
 import uet.oop.game.Entities.TileEntities.Brick;
 
@@ -68,9 +69,9 @@ public class Bomb extends AnimateEntity {
                     else  System.out.println("NOOOOOOOOOOOOOOOOOOO");
 
                     e.currentState = BreakableTileEntity.State.BROKEN;
-                    if (Math.random()<0.2){
-
-                    }
+                    //if (Math.random()<0.2){
+                        e.playScreen.itemListGame.add(new SpeedItem(e.playScreen, bombAndItemAtlas,e.getX(), e.getY()));
+                    //}
 
                     e.dispose();
 

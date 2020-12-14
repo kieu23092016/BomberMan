@@ -5,14 +5,15 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.physics.box2d.World;
 import uet.oop.game.Entities.Entity;
+import uet.oop.game.Screens.PlayScreen;
 
 import static uet.oop.game.Manager.GameManager.BRICK_BIT;
 import static uet.oop.game.Manager.GameManager.DESTROY_BIT;
 
 public class Brick extends BreakableTileEntity {
 
-    public Brick(World world, TiledMap map, Rectangle rectangle) {
-        super(world, map, rectangle);
+    public Brick(PlayScreen playScreen, TiledMap map, Rectangle rectangle) {
+        super(playScreen, map, rectangle);
         fixture.setUserData(this);
         setCategory(BRICK_BIT);
     }

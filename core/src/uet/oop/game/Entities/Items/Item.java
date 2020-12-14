@@ -13,13 +13,14 @@ import static uet.oop.game.Manager.GameManager.PPM;
 
 public abstract class Item extends Entity {
 
+    public PlayScreen playScreen;
     public enum Name {LIVE_ITEM, SPEED_ITEM, FLAME_ITEM, TIME_ITEM}
     public Name itemName;
 
     public float ITEM_WIDTH = 40;
     public float ITEM_HEIGHT = 40;
 
-    public float timerAppear = 60;
+    public float timerAppear = 200;
 
     protected TextureRegion image;
 
@@ -28,6 +29,7 @@ public abstract class Item extends Entity {
     }
 
     public Item(PlayScreen playScreen) {
+        this.playScreen = playScreen;
         gameWorld = playScreen.getGameWorld();
     }
 

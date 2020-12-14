@@ -29,6 +29,9 @@ import uet.oop.game.Entities.TileEntities.Stone;
 import uet.oop.game.Manager.WorldContactListener;
 import uet.oop.game.Scence.Hud;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static uet.oop.game.Manager.GameManager.*;
 import static uet.oop.game.Manager.GameManager.PPM;
 
@@ -54,6 +57,8 @@ public class PlayScreen implements Screen {
     private Bomber player;
     private Boss1 boss1;
     private Ghost ghost1;
+
+    public List<Item> itemListGame = new ArrayList<Item>();
     private float dt = 1 / 60f;
 
     private Animation animation;
@@ -91,15 +96,15 @@ public class PlayScreen implements Screen {
         // TODO: create ground bodies.
         for (MapObject object : map.getLayers().get(2).getObjects().getByType(RectangleMapObject.class)) {
             Rectangle rectangle = ((RectangleMapObject) object).getRectangle();
-            new Brick(gameWorld, map, rectangle);
+            new Brick(this, map, rectangle);
         }
         for (MapObject object : map.getLayers().get(4).getObjects().getByType(RectangleMapObject.class)) {
             Rectangle rectangle = ((RectangleMapObject) object).getRectangle();
-            new Stone(gameWorld, map, rectangle);
+            new Stone(this, map, rectangle);
         }
         for (MapObject object : map.getLayers().get(3).getObjects().getByType(RectangleMapObject.class)) {
             Rectangle rectangle = ((RectangleMapObject) object).getRectangle();
-            new Brick(gameWorld, map, rectangle);
+            new Brick(this, map, rectangle);
         }
 
         player = new Bomber(this, playerAtlas);
@@ -143,6 +148,10 @@ public class PlayScreen implements Screen {
         boss1.draw(game.batch);
         ghost1.draw(game.batch);
 
+        //TODO: test item
+        for (int i = 0; i<itemListGame.size(); i++) {
+            itemListGame.get(i).draw(game.batch);
+        }
 
         //TODO: test flame
         //bomb.draw(game.batch);
@@ -191,6 +200,14 @@ public class PlayScreen implements Screen {
         player.update(dt);
         boss1.update(dt);
         ghost1.update(dt);
+        for (int i = 0; i<itemListGame.size(); i++) {
+            itemListGame.get(i).update(dt);
+            if (itemListGame.get(i).timerAppear==0) {
+                itemListGame.get(i).dispose();
+                itemListGame.remove(i);
+            }
+        }
+
     }
 
     @Override

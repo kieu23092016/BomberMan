@@ -5,6 +5,7 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.physics.box2d.*;
 import uet.oop.game.Entities.Entity;
+import uet.oop.game.Screens.PlayScreen;
 
 import static uet.oop.game.Manager.GameManager.PPM;
 
@@ -12,9 +13,11 @@ public abstract class TileEntity extends Entity {
     protected TiledMap map;
     protected Rectangle rectangle;
     protected Fixture fixture;
+    public PlayScreen playScreen;
 
-    public TileEntity (World world, TiledMap map, Rectangle rectangle){
-        gameWorld = world;
+    public TileEntity (PlayScreen playScreen, TiledMap map, Rectangle rectangle){
+        this.playScreen = playScreen;
+        gameWorld = playScreen.getGameWorld();
         this.map = map;
         this.rectangle = rectangle;
 
