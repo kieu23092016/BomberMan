@@ -21,16 +21,18 @@ public abstract class Enemy extends AnimateEntity {
     protected TextureRegion bossRight;
     protected TextureRegion bossLeft;
     protected TextureRegion bossUp;
+    protected TextureRegion bossDead;
+
     protected TextureRegion region;
     protected TextureAtlas textureAtlas;
 
-    public Enemy(World gameWorld, TiledMap map){
+    public Enemy(World gameWorld, TiledMap map, int x, int y){
         this.gameWorld = gameWorld;
         this.map = map;
         velocity = new Vector2(0.4f,0);
-        defineEnemy();
+        defineEnemy(x,y);
     }
-    public abstract void defineEnemy();
+    public abstract void defineEnemy(int x, int y);
 
     public int getRandomWalkingState() {
         // define the range
@@ -67,7 +69,7 @@ public abstract class Enemy extends AnimateEntity {
         move = true;
         region=bossDown;
         body.applyLinearImpulse(new Vector2(0.0f, -0.4f), body.getWorldCenter(), true);;
-       // System.out.println("turnDown");
+        // System.out.println("turnDown");
 //        if(body.getLinearVelocity().y==0){
 //            move = false;
 //        }
@@ -86,12 +88,9 @@ public abstract class Enemy extends AnimateEntity {
         region=bossRight;
         // body.setLinearVelocity(0.4f, 0.0f);
         body.applyLinearImpulse(new Vector2(0.4f, 0), body.getWorldCenter(), true);;
-       // System.out.println("Right");
+        // System.out.println("Right");
 //        if(body.getLinearVelocity().x==0){
 //            move = false;
 //        }
     }
-
-
-
 }

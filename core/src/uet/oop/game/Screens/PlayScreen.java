@@ -108,8 +108,8 @@ public class PlayScreen implements Screen {
         }
 
         player = new Bomber(this, playerAtlas);
-        boss1 = new Boss1(gameWorld, map, boss1Atlas);
-        ghost1 = new Ghost(gameWorld, map, bossMiniAtlas);
+        boss1 = new Boss1(gameWorld, map, boss1Atlas, 600, 600);
+        ghost1 = new Ghost(gameWorld, map, bossMiniAtlas, 500,650);
 
         animation = boss1.animation;
         gameWorld.setContactListener(new WorldContactListener());

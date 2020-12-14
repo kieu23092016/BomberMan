@@ -1,9 +1,9 @@
 package uet.oop.game.Entities.AnimateEntities;
 
-import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.physics.box2d.*;
-import uet.oop.game.BombermanGame;
 import uet.oop.game.Entities.AnimateEntities.BombManager.Bomb;
 import uet.oop.game.Entities.Entity;
 import uet.oop.game.Screens.PlayScreen;
@@ -22,10 +22,8 @@ public class Bomber extends AnimateEntity {
     // public static short bomberMaskBit = BRICK_BIT | STONE_BIT | BOSS1_BIT | FLAME_BIT;
 
     public float SPEED = 1f;
-
-
+    public int HEART = 3;
     private List<Bomb> bombList = new ArrayList<Bomb>();
-
 
     public enum State {DEAD, UP, DOWN, LEFT, RIGHT}
 
@@ -36,8 +34,8 @@ public class Bomber extends AnimateEntity {
     private TextureRegion bomberUp;
     private TextureRegion bomberRight;
     private TextureRegion bomberDown;
-    private float stateTimer;
-    private boolean runningRight;
+    private boolean isLived = true;
+    private BodyDef bodyDef;
 
     public Bomber(PlayScreen playScreen, TextureAtlas textureAtlas) {
         super(textureAtlas.findRegion("bebong_down"));
@@ -77,8 +75,15 @@ public class Bomber extends AnimateEntity {
 
 
     public void update(float dt) {
-        setPosition(getPosAnimationX(), getPosAnimationY());
-        setRegion(getFrame(dt));
+        if (isLived) {
+            setPosition(getPosAnimationX(), getPosAnimationY());
+            setRegion(getFrame(dt));
+        }
+        /*if(!isLived && HEART>0){
+            setPosition(96 / PPM, 632 / PPM);
+            setBounds(45, 0, BOMBER_WIDTH / PPM, BOMBER_HEIGHT / PPM);
+            setRegion(getFrame(dt));
+        }*/
     }
 
     public TextureRegion getFrame(float dt) {
@@ -123,7 +128,7 @@ public class Bomber extends AnimateEntity {
     }
 
     public void defineCharacter() {
-        BodyDef bodyDef = new BodyDef();
+        bodyDef = new BodyDef();
         bodyDef.position.set(96 / PPM, 632 / PPM);
         bodyDef.type = BodyDef.BodyType.DynamicBody;
         body = gameWorld.createBody(bodyDef);
@@ -133,10 +138,9 @@ public class Bomber extends AnimateEntity {
         shape.setRadius(16 / PPM);
 
         fdef.filter.categoryBits = BOMBER_BIT;
-        fdef.filter.maskBits = BRICK_BIT | STONE_BIT | BOMB_BIT | BOSS1_BIT;
+        fdef.filter.maskBits = BRICK_BIT | STONE_BIT | BOMB_BIT | BOSS1_BIT | FLAME_BIT;
         fdef.shape = shape;
-        body.createFixture(fdef);
-
+        body.createFixture(fdef).setUserData(this);
         /*EdgeShape edgeUp = new EdgeShape();
         edgeUp.set(new Vector2(-8 / PPM, 16 / PPM), new Vector2(8 / PPM, 16 / PPM));
         fdef.shape = edgeUp;
@@ -165,8 +169,8 @@ public class Bomber extends AnimateEntity {
     public void placeBomb(Batch batch) {
         Bomb bomb = new Bomb(this, bombAndItemAtlas);
         bombList.add(bomb);
-        System.out.println("SIZE OF BOMB LIST IS: " + bombList.size());
-        BombermanGame.manager.get("audio/sound/newbomb.wav", Sound.class).play();
+        //System.out.println("SIZE OF BOMB LIST IS: " + bombList.size());
+
     }
 
     public void draw(Batch batch, float dt) {
@@ -187,12 +191,12 @@ public class Bomber extends AnimateEntity {
         this.draw(batch);
 
     }
-
     @Override
     public void onHeadHit() {
-
+        isLived = false;
+        setRegion(new TextureRegion(new Texture("map/Images/Images/bebong_dead.png")));
+        HEART--;
     }
-
     @Override
     public void dispose() {
 

@@ -13,8 +13,8 @@ import static uet.oop.game.Manager.GameManager.*;
 import static uet.oop.game.Manager.GameManager.BOMBER_BIT;
 
 public class Ghost extends Enemy {
-    public Ghost(World gameWorld, TiledMap map, TextureAtlas textureAtlas) {
-        super(gameWorld, map);
+    public Ghost(World gameWorld, TiledMap map, TextureAtlas textureAtlas, int x, int y) {
+        super(gameWorld, map, x, y);
         this.textureAtlas = textureAtlas;
 
         bossDown = new TextureRegion(textureAtlas.findRegion("quaivat 3_down"));
@@ -30,9 +30,9 @@ public class Ghost extends Enemy {
     }
 
     @Override
-    public void defineEnemy() {
+    public void defineEnemy(int x, int y) {
         BodyDef bodyDef = new BodyDef();
-        bodyDef.position.set(500 / PPM, 500 / PPM);
+        bodyDef.position.set(x / PPM, y / PPM);
         bodyDef.type = BodyDef.BodyType.DynamicBody;
         body = gameWorld.createBody(bodyDef);
 
@@ -41,9 +41,9 @@ public class Ghost extends Enemy {
         shape.setRadius(21 / PPM);
 
         fixtureDef.filter.categoryBits = BOSSMINI_BIT;
-        fixtureDef.filter.maskBits =  BOMB_BIT | STONE_BIT | BOMBER_BIT;
+        fixtureDef.filter.maskBits =  BOMB_BIT | STONE_BIT | BOMBER_BIT | FLAME_BIT;
         fixtureDef.shape = shape;
-        body.createFixture(fixtureDef);
+        body.createFixture(fixtureDef).setUserData(this);
     }
     public void update(float dt) {
         setPosition(body.getPosition().x - getWidth() / 2, body.getPosition().y - getHeight() / 2);

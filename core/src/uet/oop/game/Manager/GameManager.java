@@ -31,6 +31,4 @@ public class GameManager {
     public static final short FLAME_BIT = 32;
     public static final short BOMB_BIT = 64;
     public static final short BOSSMINI_BIT = 256;
-
-
 }

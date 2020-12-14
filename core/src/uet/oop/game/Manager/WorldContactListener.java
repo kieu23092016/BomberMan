@@ -2,6 +2,9 @@ package uet.oop.game.Manager;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.physics.box2d.*;
+import uet.oop.game.Entities.AnimateEntities.Bomber;
+import uet.oop.game.Entities.AnimateEntities.Enemies.Boss1;
+import uet.oop.game.Entities.AnimateEntities.Enemies.Ghost;
 import uet.oop.game.Entities.Entity;
 
 import static uet.oop.game.Manager.GameManager.*;
@@ -18,17 +21,68 @@ public class WorldContactListener implements ContactListener {
             case BOMBER_BIT | FLAME_BIT:
                 if (fixture1.getFilterData().categoryBits == BOMBER_BIT)
                 {
-                    ((Entity) fixture2.getUserData()).onHeadHit();
-                    //Gdx.app.log("COLLIDE","bOMBER");
+                    ((Bomber)fixture1.getUserData()).onHeadHit();
+                    Gdx.app.log("bomber","flame");
                 }
                 else
                 {
-                    ((Entity) fixture1.getUserData()).onHeadHit();
-                    Gdx.app.log("COLLIDE","BOMBER");
+                    ((Bomber)fixture2.getUserData()).onHeadHit();
+                    Gdx.app.log("flame", "bomber");
 
                 }
                 break;
+            case BOMBER_BIT | BOSS1_BIT:
+                if (fixture1.getFilterData().categoryBits == BOMBER_BIT)
+                {
+                    ((Bomber)fixture1.getUserData()).onHeadHit();
+                    Gdx.app.log("bomber","boss");
+                }
+                else
+                {
+                    ((Bomber)fixture2.getUserData()).onHeadHit();
+                    Gdx.app.log("boss", "bomber");
+
+                }
+                break;
+            case FLAME_BIT | BOSS1_BIT:
+                if (fixture1.getFilterData().categoryBits == BOSS1_BIT && fixture2.getFilterData().categoryBits == FLAME_BIT)
+                {
+                    ((Boss1)fixture1.getUserData()).onHeadHit();
+                    Gdx.app.log("FLAME","boss");
+                }
+                else if (fixture1.getFilterData().categoryBits == FLAME_BIT && fixture2.getFilterData().categoryBits == BOSS1_BIT)
+                {
+                    Boss1 b= (Boss1)fixture2.getUserData();
+                    b.onHeadHit();
+                    Gdx.app.log("boss", "FLAME");
+                }
+                break;
+            case FLAME_BIT | BOSSMINI_BIT:
+                if (fixture1.getFilterData().categoryBits == BOSSMINI_BIT)
+                {
+                    ((Ghost)fixture1.getUserData()).onHeadHit();
+                    Gdx.app.log("FLAME","boss");
+                }
+                else if (fixture2.getFilterData().categoryBits == BOSSMINI_BIT)
+                {
+                    ((Ghost)fixture2.getUserData()).onHeadHit();
+                    Gdx.app.log("boss", "FLAME");
+                }
+                break;
+            case BOMBER_BIT | BOSSMINI_BIT:
+                if (fixture1.getFilterData().categoryBits == BOMBER_BIT)
+                {
+                    ((Bomber)fixture1.getUserData()).onHeadHit();
+                    Gdx.app.log("FLAME","boss");
+                }
+                else if (fixture1.getFilterData().categoryBits == BOSSMINI_BIT)
+                {
+                    ((Bomber)fixture1.getUserData()).onHeadHit();
+                    Gdx.app.log("boss", "FLAME");
+                }
+                break;
         }
+
     }
 
     @Override
@@ -57,9 +111,9 @@ public class WorldContactListener implements ContactListener {
             float platform_x = fixtureA.getBody().getPosition().x;
             float player_x = fixtureB.getBody().getPosition().x;
 
-            System.out.println(fixtureA.getShape().getRadius() + " r "+fixtureB.getShape().getRadius());
+            //System.out.println(fixtureA.getShape().getRadius() + " r "+fixtureB.getShape().getRadius());
             double DIS = fixtureA.getShape().getRadius() + fixtureB.getShape().getRadius();
-            System.out.println(fixtureA.getShape().getRadius() + " r "+fixtureB.getShape().getRadius()+" DIS"+DIS);
+            //System.out.println(fixtureA.getShape().getRadius() + " r "+fixtureB.getShape().getRadius()+" DIS"+DIS);
 
             if (fixtureA.getFilterData().categoryBits == BOMB_BIT) {
                 platform_y = fixtureA.getBody().getPosition().y;
@@ -74,12 +128,12 @@ public class WorldContactListener implements ContactListener {
             }
             double distance = Math.sqrt((platform_x-player_x)*(platform_x-player_x)
                     + (platform_y-player_y)*(platform_y-player_y)) ;
-            System.out.println(distance+"dis");
+            //System.out.println(distance+"dis");
             if (distance == 0.0) {  //the player is below platform
                 contact.setEnabled(false);
             } else {
                 contact.setEnabled(true);
-                System.out.println("collide"+distance);
+                //System.out.println("collide"+distance);
 
             }
         }
